@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator"
 import bcrypt from "bcrypt"
-import { UserI } from "./schemas";
+import { UserI } from "../types/schemas";
 import { subProductSchema } from "./productModel";
 
 const Schema = mongoose.Schema

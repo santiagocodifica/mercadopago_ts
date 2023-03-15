@@ -8,8 +8,8 @@ export interface UserI {
   password: string
   role: "customer" | "admin"
   orders: [Types.ObjectId]
-  locations: array<Location> // set this type
-  preparedCheckout: array<SubProduct> // set this type
+  locations: array<Location>
+  preparedCheckout: array<SubProduct>
 }
 
 export interface ProductI {

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { subProductSchema } from "./productModel";
-import { OrderI } from "./schemas";
+import { OrderI } from "../types/schemas";
 import { locationSchema } from "./userModel";
 
 const Schema = mongoose.Schema
