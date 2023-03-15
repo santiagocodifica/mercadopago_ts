@@ -1,6 +1,7 @@
 import express from "express"
-import requireAdmin from "../middleware/requireAdmin"
-import requireAuth from "../middleware/requireAuth"
+import { createOrder, deleteOrder, getOrder, getOrders, getOrdersByStatus, updateOrderStatus } from "../controllers/orderController"
+import requireAdmin from "../middleware/auth/requireAdmin"
+import requireAuth from "../middleware/auth/requireAuth"
 
 const router = express.Router()
 
@@ -8,17 +9,17 @@ router.use(requireAuth)
 router.use(requireAdmin)
 
 // GET
-router.get("/") // getOrders
-router.get("/:id") // getOrder
-router.get("/status/:status") // getOrderByStatus
+router.get("/", getOrders) // getOrders
+router.get("/:id", getOrder) // getOrder
+router.get("/status/:status", getOrdersByStatus) // getOrdersByStatus
 
 // POST
-router.post("/:method") // createOrder => specify mercadopago or admin eg
+router.post("/:method", createOrder) // createOrder => specify mercadopago or admin eg
 
 // PATCH
-router.patch("/:id") // updateOrder
+router.patch("/status/:id", updateOrderStatus) // updateOrderStatus
 
 // DELETE
-router.delete("/:id") // deleteOrder
+router.delete("/:id", deleteOrder) // deleteOrder
 
 export default router

@@ -2,6 +2,9 @@ import * as dotenv from "dotenv"
 dotenv.config()
 import express from "express"
 import mongoose from "mongoose"
+import productRoutes from "./routes/product"
+import userRoutes from "./routes/user"
+import orderRoutes from "./routes/order"
 
 const app = express()
 
@@ -12,6 +15,9 @@ app.use((req, _res, next) => {
 })
 
 //api routes
+app.use("/api/v1/product", productRoutes)
+app.use("/api/v1/user", userRoutes)
+app.use("/api/v1/order", orderRoutes)
 
 //mongoDB connection
 mongoose.connect(`${process.env.MONGO_URI}`)

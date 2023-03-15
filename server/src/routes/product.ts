@@ -1,6 +1,6 @@
 import express from "express"
-import requireAdmin from "../middleware/requireAdmin"
-import requireAuth from "../middleware/requireAuth"
+import requireAdmin from "../middleware/auth/requireAdmin"
+import requireAuth from "../middleware/auth/requireAuth"
 
 const router = express.Router()
 

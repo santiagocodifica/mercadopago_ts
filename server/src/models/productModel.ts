@@ -14,7 +14,7 @@ export const subProductSchema = new Schema({
   amount: { type: Number, required: true }
 })
 
-const productSchema = new Schema({
+const productSchema = new Schema<ProductI>({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   previousPrice: { type: Number, required: false },
@@ -25,7 +25,7 @@ const productSchema = new Schema({
   onSale: { type: Boolean, required: true, default: false },
   description: { type: String, required: true },
   smallDescription: { type: String, required: true },
-  categories: { type: Array, of: String, required: true },
+  categories: [{ tye: String, required: true }],
   gender: { type: String, required: true },
   specifications: {
     color: { type: String, required: false },
@@ -38,7 +38,7 @@ const productSchema = new Schema({
   }],
   thumb: { type: String, required: true },
   thumbHover: { type: String, required: true },
-  images: { type: Array, of: String, required: true }
+  images: [{ type: String, required: true }]
 })
 
 export default mongoose.model<ProductI>("product", productSchema)

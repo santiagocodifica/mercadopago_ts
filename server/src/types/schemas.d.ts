@@ -1,18 +1,18 @@
 import { MercadoPagoResponse } from "mercadopago/utils/mercadopago-respose"
-import { Types } from "mongoose"
+import mongoose, { Types } from "mongoose"
 
-export interface UserI {
+export interface UserI extends mongoose.Document {
   name: string
   email: string
   phone: string
   password: string
   role: "customer" | "admin"
   orders: [Types.ObjectId]
-  locations: array<Location>
-  preparedCheckout: array<SubProduct>
+  locations: Array<Location>
+  preparedCheckout: SubProduct | null
 }
 
-export interface ProductI {
+export interface ProductI extends mongoose.Document {
   name: string
   price: number
   previousPrice?: number
@@ -23,23 +23,28 @@ export interface ProductI {
   onSale: boolean
   description: string
   smallDescription: string
-  categories: array<string>
+  categories: Array<string>
   gender: "men" | "women" | "unisex"
   specifications: {
     color: string
     fit: string
     weight: string
   }
-  stock: [{
-    size: string
-    amount: number
-  }]
+  stock: Array<stockItem>
   thumb: string
   thumbHover: string
-  images: array<string>
+  images: Array<string>
 }
 
-export interface SubProductI {
+export type StockItem = {
+  _id: Types.ObjectId,
+  size: string,
+  amount: number
+}
+
+export interface SubProductI extends mongoose.Document {
+  _id: Types.ObjectId
+  productId: Types.ObjectId
   name: string
   price: number
   previousPrice: number
@@ -50,15 +55,15 @@ export interface SubProductI {
   amount: number
 }
 
-export interface OrderI {
-  date: Date
+export interface OrderI extends mongoose.Document {
+  _id: Types.ObjectId,
   customer: {
     name: string
     email: string,
     phone?: string,
     location: Location
   }
-  products: array<SubProduct>
+  products: Array<SubProduct>
   totalPrice: number
   orderStatus: string
   mercadopagoData?: MercadoPagoResponse

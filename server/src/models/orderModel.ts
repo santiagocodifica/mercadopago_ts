@@ -5,7 +5,7 @@ import { locationSchema } from "./userModel";
 
 const Schema = mongoose.Schema
 
-const orderSchema = new Schema({
+const orderSchema = new Schema<OrderI>({
   customer: {
     name: { type: String, required: true },
     email: { type: String, required: true },

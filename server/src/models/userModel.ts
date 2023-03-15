@@ -15,7 +15,7 @@ export const locationSchema = new Schema({
   comment: { type: String, required: false }
 })
 
-const userSchema = new Schema({
+const userSchema = new Schema<UserI>({
   name: { type: String, required: true},
   email: { type: String, required: true },
   phone: { type: String, required: true },

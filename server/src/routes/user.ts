@@ -11,11 +11,11 @@ router.post("/signup")
 // GET
 router.get("/") // getUsers
 router.get("/:id") // getUser
-router.get("/preparedCheckout") // getUserPreparedCheckout
+router.get("/prepared-checkout") // getUserPreparedCheckout
 router.get("/orders") // getUserOrders
 
 // POST
-router.post("/prepareCheckout") // prepareUserCheckout
+router.post("/prepare-checkout") // prepareUserCheckout
 router.post("/location") // createUserLocation
 
 // PATCH
