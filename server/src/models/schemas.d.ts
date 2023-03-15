@@ -1,7 +1,7 @@
 import { MercadoPagoResponse } from "mercadopago/utils/mercadopago-respose"
 import { Types } from "mongoose"
 
-export interface User {
+export interface UserI {
   name: string
   email: string
   phone: string
@@ -12,7 +12,7 @@ export interface User {
   preparedCheckout: array<SubProduct> // set this type
 }
 
-export interface Product {
+export interface ProductI {
   name: string
   price: number
   previousPrice?: number
@@ -39,7 +39,7 @@ export interface Product {
   images: array<string>
 }
 
-export interface SubProduct {
+export interface SubProductI {
   name: string
   price: number
   previousPrice: number
@@ -50,7 +50,7 @@ export interface SubProduct {
   amount: number
 }
 
-export interface Order {
+export interface OrderI {
   date: Date
   customer: {
     name: string

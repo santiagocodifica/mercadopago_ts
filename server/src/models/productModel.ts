@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ProductI } from "./schemas";
 
 const Schema = mongoose.Schema
 
@@ -40,4 +41,4 @@ const productSchema = new Schema({
   images: { type: Array, of: String, required: true }
 })
 
-module.exports = mongoose.model("product", productSchema)
+export default mongoose.model<ProductI>("product", productSchema)

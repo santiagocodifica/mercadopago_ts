@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { subProductSchema } from "./productModel";
+import { OrderI } from "./schemas";
 import { locationSchema } from "./userModel";
 
 const Schema = mongoose.Schema
@@ -17,4 +18,4 @@ const orderSchema = new Schema({
   mercadopagoData: { type: Object, required: false }
 },{ timestamps: true })
 
-module.exports = mongoose.model("order", orderSchema)
+export default mongoose.model<OrderI>("order", orderSchema)

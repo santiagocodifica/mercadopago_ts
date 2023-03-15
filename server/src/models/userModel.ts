@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator"
 import bcrypt from "bcrypt"
-import { User } from "./schemas";
+import { UserI } from "./schemas";
 import { subProductSchema } from "./productModel";
 
 const Schema = mongoose.Schema
@@ -48,7 +48,7 @@ userSchema.statics.signup = async function(name, email, password1, password2){
   const salt = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(password1, salt)
 
-  const user: User = await this.create({ name, email, password: hash })
+  const user: UserI = await this.create({ name, email, password: hash })
 
   return user
 }
@@ -56,7 +56,7 @@ userSchema.statics.signup = async function(name, email, password1, password2){
 userSchema.statics.login = async function(email, password){
   if(!email || !password){ throw Error("Deben rellenarse todos los campos") }
 
-  const user: User = await this.findOne({ email })
+  const user: UserI = await this.findOne({ email })
   if(!user){
     throw Error("Email incorrecto")
   }
@@ -69,4 +69,4 @@ userSchema.statics.login = async function(email, password){
   return user
 }
 
-module.exports = mongoose.model("user", userSchema)
+export default mongoose.model<UserI>("user", userSchema)
