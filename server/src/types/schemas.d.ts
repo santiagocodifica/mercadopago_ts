@@ -1,5 +1,5 @@
 import { MercadoPagoResponse } from "mercadopago/utils/mercadopago-respose"
-import mongoose, { Types } from "mongoose"
+import mongoose, { Types, Model } from "mongoose"
 
 export interface UserI extends mongoose.Document {
   name: string
@@ -9,7 +9,16 @@ export interface UserI extends mongoose.Document {
   role: "customer" | "admin"
   orders: [Types.ObjectId]
   locations: Array<Location>
-  preparedCheckout: SubProduct | null
+  preparedCheckout: {
+    products?: Array<SubProductI>
+    location?: Location
+    totalPrice?: number
+  }
+}
+
+export interface UserIModel extends Model<UserI> {
+  login(email: string, password: string): Promise<UserI>
+  signup(name: string, email: string, password1: string, password2: string): Promise<UserI>
 }
 
 export interface ProductI extends mongoose.Document {

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator"
 import bcrypt from "bcrypt"
-import { UserI } from "../types/schemas";
+import { UserI, UserIModel } from "../types/schemas";
 import { subProductSchema } from "./productModel";
 
 const Schema = mongoose.Schema
@@ -13,9 +13,9 @@ export const locationSchema = new Schema({
   address: { type: String, required: true },
   postalCode: { type: Number, required: true },
   comment: { type: String, required: false }
-})
+},{ _id: true })
 
-const userSchema = new Schema<UserI>({
+const userSchema = new Schema<UserI, UserIModel>({
   name: { type: String, required: true},
   email: { type: String, required: true },
   phone: { type: String, required: true },
@@ -56,7 +56,7 @@ userSchema.statics.signup = async function(name, email, password1, password2){
 userSchema.statics.login = async function(email, password){
   if(!email || !password){ throw Error("Deben rellenarse todos los campos") }
 
-  const user: UserI = await this.findOne({ email })
+  const user: UserI | null = await this.findOne({ email })
   if(!user){
     throw Error("Email incorrecto")
   }
@@ -69,4 +69,4 @@ userSchema.statics.login = async function(email, password){
   return user
 }
 
-export default mongoose.model<UserI>("user", userSchema)
+export default mongoose.model<UserI, UserIModel>("user", userSchema)

@@ -59,7 +59,7 @@ export const createOrder: RequestHandler = async (req, res) => {
       throw Error("Could not find User to assign order")
     }
     user.orders.push(order._id)
-    user.preparedCheckout = []
+    user.preparedCheckout = {}
     const saveUser = await user.save()
     if(!saveUser){
       throw Error("Could not assign order to user")
