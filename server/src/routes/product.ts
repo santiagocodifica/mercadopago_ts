@@ -19,14 +19,14 @@ router.use(requireAdmin)
 
 // POST
 router.post("/", createProduct) // createProduct
-router.post("/image/:productId/:path", (req: Request, res: Response, next: NextFunction) => upload(req, res, (err: unknown) => multerErrorHandler(res, next, err)), createImage) // createImage + query params
+router.post("/image/:productId/:type", (req: Request, res: Response, next: NextFunction) => upload(req, res, (err: unknown) => multerErrorHandler(res, next, err)), createImage) // createImage + query params
 
 // PATCH
 router.patch("/:id", updateProduct) // updateProduct
-router.patch("/image/:productId/:path", upload, (req: Request, res: Response, next: NextFunction) => upload(req, res, (err: unknown) => multerErrorHandler(res, next, err)), updateImage) // updateImage + query params
+router.patch("/image/:productId/:type", upload, (req: Request, res: Response, next: NextFunction) => upload(req, res, (err: unknown) => multerErrorHandler(res, next, err)), updateImage) // updateImage + query params
 
 // DELETE
 router.delete("/:id", deleteProduct) // deleteProduct
-router.delete("/image/:productId/:path", deleteImage) // deleteImage + query params
+router.delete("/image/:productId/:type", deleteImage) // deleteImage + query params
 
 export default router

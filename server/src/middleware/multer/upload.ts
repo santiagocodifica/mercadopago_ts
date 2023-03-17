@@ -4,7 +4,7 @@ import fs from "fs"
 
 const storage = multer.diskStorage({
   destination: (req, _file, cb) => {
-    const filePath = path.join(__dirname, "../../../../client/public/imgs/products/", req.params.path)
+    const filePath = path.join(__dirname, "../../../../client/public/imgs/products/", req.params.productId)
     if(!fs.existsSync(filePath)){ // create new dir
       fs.mkdirSync(filePath)
     }

@@ -47,13 +47,30 @@ export const createProduct: RequestHandler = async (req, res) => {
 }
 
 export const createImage: RequestHandler = async (req, res) => {
-  const { productId } = req.params 
+  const { productId, type } = req.params 
   try{
-    // only to upload images
-    const product = await Product.findByIdAndUpdate(productId, {
-      $push: { images: { src: req.file?.filename } }
-    }, { new: true })
-    return res.status(200).json(product)
+    if(!req.file?.filename){
+      throw Error("Image did not upload")
+    }
+    if(type === "images"){
+      const product: ProductI | null = await Product.findByIdAndUpdate(productId, {
+        $push: { images: { src: req.file.filename } }
+      }, { new: true })
+      return res.status(200).json(product)
+    }else if(type === "thumb"){
+      const product: ProductI | null = await Product.findByIdAndUpdate(productId, {
+        $set: { thumb: req.file.filename }
+      }, { new: true })
+      return res.status(200).json(product)
+    }else if(type === "thumbHover"){
+      const product: ProductI | null = await Product.findByIdAndUpdate(productId, {
+        $set: { thumbHover: req.file.filename }
+      }, { new: true })
+      return res.status(200).json(product)
+    }else{
+      fs.unlinkSync(path.join(__dirname, "../../../client/public/imgs/products/", productId, req.file.filename))
+      return res.status(400).json({ error: "Unknown image type"})
+    }
   }catch(error){
     console.log(error)
     return res.status(404).json("Could not create image")
@@ -89,20 +106,49 @@ export const updateProduct: RequestHandler = async (req, res) => {
 }
 
 export const updateImage: RequestHandler = async (req, res) => {
-  const { path: imgPath } = req.params
+  const { productId, type } = req.params
   const { imageId } = req.query
   try{
-    // delete previous image
-    const product: ProductI | null = await Product.findOne({ "images._id": imageId }, { "images.$": 1 })
-    if(!product){
-      throw Error("Could not find product to update")
+    if(!req.file?.filename){
+      throw Error("Failed to upload file")
     }
-    const imgSrcToDelete: string = product.images[0].src
-    fs.unlinkSync(path.join(__dirname, "../../../client/public/imgs/products/", imgPath, imgSrcToDelete))
-    const newProduct = await Product.findOneAndUpdate({ "images._id": imageId }, {
-      $set: { "images.$.src": req.file?.filename }
-    }, { new: true })
-    return res.status(200).json(newProduct)
+    if(type === "images"){
+      const product: ProductI | null = await Product.findOne({ "images._id": imageId }, { "images.$": 1 })
+      if(!product){
+        throw Error("Could not find product to update")
+      }
+      const imgSrcToDelete: string = product.images[0].src
+      fs.unlinkSync(path.join(__dirname, "../../../client/public/imgs/products/", productId, imgSrcToDelete))
+      const newProduct = await Product.findOneAndUpdate({ "images._id": imageId }, {
+        $set: { "images.$.src": req.file.filename }
+      }, { new: true })
+      return res.status(200).json(newProduct)
+    }else if(type === "thumb"){
+      const product: ProductI | null = await Product.findById(productId)
+      if(!product){
+        throw Error("Could not find product to update")
+      }
+      const imgSrcToDelete: string = product.thumb
+      fs.unlinkSync(path.join(__dirname, "../../../client/public/imgs/products", productId, imgSrcToDelete))
+      const newProduct: ProductI | null = await Product.findByIdAndUpdate(productId, {
+        $set: { thumb: req.file.filename }
+      }, { new: true })
+      return res.status(200).json(newProduct)
+    }else if(type === "thumbHover"){
+      const product: ProductI | null = await Product.findById(productId)
+      if(!product){
+        throw Error("Could not find product to update")
+      }
+      const imgSrcToDelete: string = product.thumbHover
+      fs.unlinkSync(path.join(__dirname, "../../../client/public/imgs/products", productId, imgSrcToDelete))
+      const newProduct: ProductI | null = await Product.findByIdAndUpdate(productId, {
+        $set: { thumbHover: req.file.filename }
+      }, { new: true })
+      return res.status(200).json(newProduct)
+    }else{
+      fs.unlinkSync(path.join(__dirname, "../../../client/public/imgs/products/", productId, req.file.filename))
+      return res.status(400).json({ error: "Unknown image type"})
+    }
   }catch(error){
     console.log(error)
     return res.status(400).json({ error: "Could not update image" })
