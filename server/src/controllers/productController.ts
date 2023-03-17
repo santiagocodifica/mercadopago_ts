@@ -172,5 +172,46 @@ export const deleteProduct: RequestHandler = async (req, res) => {
   }
 }
 
-export const deleteImage: RequestHandler = async (_req, _res) => {
+export const deleteImage: RequestHandler = async (req, res) => {
+  const { productId, type } = req.params
+  const { imageId } = req.query
+  console.log(productId, type, imageId)
+  try{
+    if(type === "images"){
+      const product: ProductI | null = await Product.findOne({ "images._id": imageId }, { "images.$": 1 })
+      if(!product){
+        throw Error
+      }
+      fs.rmSync(path.join(__dirname, "../../../client/public/imgs/products/", productId, product.images[0].src))
+      const updatedProduct = await Product.findOneAndUpdate({ _id: productId }, {
+        $pull: { images: { _id: imageId } }
+      }, { new: true })
+      return res.status(200).json(updatedProduct)
+    }else if(type === "thumb"){
+      const product: ProductI | null = await Product.findById(productId)
+      if(!product){
+        throw Error
+      }
+      fs.rmSync(path.join(__dirname, "../../../client/public/imgs/products/", productId, product.thumb))
+      const updatedProduct = await Product.findOneAndUpdate({ _id: productId }, {
+        $unset: { thumb: "" }
+      }, { new: true })
+      return res.status(200).json(updatedProduct)
+    }else if(type === "thumbHover"){
+      const product: ProductI | null = await Product.findById(productId)
+      if(!product){
+        throw Error
+      }
+      fs.rmSync(path.join(__dirname, "../../../client/public/imgs/products/", productId, product.thumbHover))
+      const updatedProduct = await Product.findOneAndUpdate({ _id: productId }, {
+        $unset: { thumbHover: "" }
+      }, { new: true })
+      return res.status(200).json(updatedProduct)
+    }else{
+      throw Error("Type of image not set")
+    }
+  }catch(error){
+    console.log(error)
+    return res.status(404).json({ error: "Failed to delete image" })
+  }
 }
