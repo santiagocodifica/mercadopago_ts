@@ -23,7 +23,11 @@ const userSchema = new Schema<UserI, UserIModel>({
   role: { type: String, required: true, default: "customer" },
   orders: [{ type: Schema.Types.ObjectId, required: false }],
   locations: [locationSchema],
-  preparedCheckout: [subProductSchema]
+  preparedCheckout: {
+    location: locationSchema,
+    products: [subProductSchema],
+    totalPrice: { type: Number, required: true }
+  }
 })
 
 userSchema.statics.signup = async function(name, email, password1, password2){

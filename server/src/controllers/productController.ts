@@ -175,7 +175,6 @@ export const deleteProduct: RequestHandler = async (req, res) => {
 export const deleteImage: RequestHandler = async (req, res) => {
   const { productId, type } = req.params
   const { imageId } = req.query
-  console.log(productId, type, imageId)
   try{
     if(type === "images"){
       const product: ProductI | null = await Product.findOne({ "images._id": imageId }, { "images.$": 1 })

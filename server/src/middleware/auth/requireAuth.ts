@@ -1,9 +1,9 @@
-import { RequestHandler } from "express"
+import { RequestHandler, Request } from "express"
 import jwt from "jsonwebtoken"
 import User from "../../models/userModel"
 import { UserI } from "../../types/schemas"
 
-const requireAuth: RequestHandler = async (req, res, next) => {
+const requireAuth: RequestHandler = async (req: Request, res, next) => {
   const authorization = req.headers["authorization"]
   if(!authorization){
     return res.status(401).json({ error: "Usuario no autorizado" })

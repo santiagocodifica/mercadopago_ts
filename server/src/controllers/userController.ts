@@ -60,15 +60,17 @@ export const getUser: RequestHandler = async (req, res) => {
 
 export const getPreparedCheckout: RequestHandler = async (req, res) => {
   let totalPrice: number = 0
+  const user: UserI = req.user
   try{
     // calculate price
-    if(!req.user.preparedCheckout.products){
+    if(!user.preparedCheckout.products){
       throw Error("Could not find selected products")
     }
-    await Promise.all(req.user.preparedCheckout.products.map(async (product: SubProductI) => {
-      const dbProduct: ProductI | null = await Product.findById(product._id)
+    await Promise.all(user.preparedCheckout.products.map(async (product: SubProductI) => {
+      const dbProduct: ProductI | null = await Product.findOne({ _id: product.productId })
+      console.log(dbProduct)
       if(!dbProduct){
-        throw Error("Could not find selected products")
+        throw Error("Could not find selected products 2")
       }
       totalPrice = totalPrice + dbProduct.price * product.amount
     }))
@@ -98,7 +100,8 @@ export const getUserOrders: RequestHandler = async (req, res) => {
 
 export const prepareUserCheckout: RequestHandler = async (req, res) => {
   const { location, products } = req.body
-  const user = req.user
+  console.log(req.body)
+  const user: UserI = req.user
   try{
     user.preparedCheckout = { products, location, totalPrice: 0 }
     const savedUser = await user.save()
@@ -113,16 +116,15 @@ export const prepareUserCheckout: RequestHandler = async (req, res) => {
 }
 
 export const createUserLocation: RequestHandler = async (req, res) => {
-  const { location } = req.body
-  const user = req.user
+  const data = req.body
+  const user: UserI = req.user
   try{
-    user.locations.push(location)
+    user.locations.push(data)
     const savedUser = await user.save()
     if(!savedUser){
       throw Error("Could not save location")
     }
-    const newLocation = user.locations[user.locations.length - 1]
-    return res.status(200).json(newLocation)
+    return res.status(200).json(user)
   }catch(error){
     console.log(error)
     return res.status(400).json({ error: "Could not save location" })
@@ -146,18 +148,25 @@ export const updateUser: RequestHandler = async (req, res) => {
   }
 }
 
-export const deleteUser: RequestHandler = async (_req, _res) => {
+export const deleteUser: RequestHandler = async (req, res) => {
+  const user: UserI = req.user
+  try{
+    const deleteUser: UserI | null = await User.findByIdAndDelete(user._id)
+    return res.status(200).json(deleteUser)
+  }catch(error){
+    console.log(error)
+    return res.status(404).json({ error: "User failed to be deleted" })
+  }
 }
 
 export const deleteUserLocation: RequestHandler = async (req, res) => {
-  // const { id } = req.params
+  const { id } = req.params
+  const user: UserI = req.user
   try{
-    // req.user.locations.id(id).remove()
-    const savedUser = await req.user.save()
-    if(!savedUser){
-      throw Error("Could not delete location")
-    }
-    return res.status(200).json(req.user)
+    const updatedUser: UserI | null = await User.findByIdAndUpdate(user._id, {
+      $pull: { locations: { _id: id } }
+    }, { new: true })
+    return res.status(200).json(updatedUser)
   }catch(error){
     console.log(error)
     return res.status(400).json({ error: "Could not delete location" })

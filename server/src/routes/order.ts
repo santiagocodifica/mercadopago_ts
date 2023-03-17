@@ -2,7 +2,7 @@ import express from "express"
 import { createOrder, deleteOrder, getOrder, getOrders, getOrdersByStatus, updateOrderStatus } from "../controllers/orderController"
 import mercadopagoPayment from "../middleware/mercadopago/mercadopagoPayment"
 import mercadopagoToken from "../middleware/mercadopago/mercadopagoToken"
-import requireAdmin from "../middleware/auth/requireAdmin"
+// import requireAdmin from "../middleware/auth/requireAdmin"
 import requireAuth from "../middleware/auth/requireAuth"
 
 const router = express.Router()
@@ -11,7 +11,7 @@ router.use(requireAuth)
 
 router.post("/mercadopago", mercadopagoToken, mercadopagoPayment, createOrder) // createOrder => specify mercadopago or admin eg
 
-router.use(requireAdmin)
+// router.use(requireAdmin)
 
 // GET
 router.get("/", getOrders) // getOrders

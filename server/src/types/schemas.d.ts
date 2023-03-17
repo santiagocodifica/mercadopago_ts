@@ -54,10 +54,10 @@ export type StockItem = {
 }
 
 export interface SubProductI extends mongoose.Document {
-  productId: Types.ObjectId
+  productId: mongoose.Types.ObjectId 
   name: string
   price: number
-  previousPrice: number
+  previousPrice?: number
   active: boolean
   smallDescription: string
   thumb: string

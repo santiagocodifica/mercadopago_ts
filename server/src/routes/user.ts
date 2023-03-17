@@ -1,6 +1,6 @@
 import express from "express"
 import { createUserLocation, deleteUser, deleteUserLocation, getPreparedCheckout, getUser, getUserOrders, getUsers, login, prepareUserCheckout, signup, updateUser } from "../controllers/userController"
-import requireAdmin from "../middleware/auth/requireAdmin"
+// import requireAdmin from "../middleware/auth/requireAdmin"
 import requireAuth from "../middleware/auth/requireAuth"
 
 const router = express.Router()
@@ -30,12 +30,12 @@ router.delete("/location/:id", deleteUserLocation) // deleteUserLocation
 //
 // CMS ROUTES
 // 
-router.use(requireAdmin)
+// router.use(requireAdmin)
 //
 router.get("/", getUsers) // getUsers
 router.get("/:id", getUser) // getUser
 router.get("/orders/:id") // to use from cms
 router.patch("/:id") // to use from cms
-router.delete("/:id") // to use from cms
+//router.delete("/:id") // to use from cms
 
 export default router

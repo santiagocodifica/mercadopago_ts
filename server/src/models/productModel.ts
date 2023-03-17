@@ -4,9 +4,10 @@ import { ProductI, SubProductI } from "../types/schemas";
 const Schema = mongoose.Schema
 
 export const subProductSchema = new Schema<SubProductI>({
+  productId: { type: mongoose.Schema.Types.ObjectId, required: true },
   name: { type: String, required: true },
   price: { type: Number, required: true },
-  previousPrice: { type: Number, required: true },
+  previousPrice: { type: Number, required: false },
   active: { type: Boolean, required: true },
   smallDescription: { type: String, required: true },
   thumb: { type: String, required: true },

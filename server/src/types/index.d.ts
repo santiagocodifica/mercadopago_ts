@@ -2,8 +2,8 @@ import { UserI } from "./schemas";
 
 declare global {
   namespace Express {
-    interface Request {
-      user: UserI
+    export interface Request {
+      user: any
       mercadopagoResponse?: any 
       file?: any
     }
@@ -14,4 +14,3 @@ declare global {
     }
   }
 }
-export {}
