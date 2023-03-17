@@ -155,7 +155,21 @@ export const updateImage: RequestHandler = async (req, res) => {
   }
 }
 
-export const deleteProduct: RequestHandler = async (_req, _res) => {
+export const deleteProduct: RequestHandler = async (req, res) => {
+  const { id } = req.params
+  try{
+    // delete image directory
+    const imagesDirectory: string = path.join(__dirname, "../../../client/public/imgs/products/", id)
+    if(imagesDirectory){
+      fs.rmdirSync(imagesDirectory, { recursive: true })
+    }
+    // delete document from database
+    const product = await Product.findByIdAndDelete(id)
+    return res.status(200).json(product)
+  }catch(error){
+    console.log(error)
+    return res.status(404).json({ error: "Could not delete product" })
+  }
 }
 
 export const deleteImage: RequestHandler = async (_req, _res) => {
