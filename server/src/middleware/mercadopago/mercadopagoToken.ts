@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import mercadopago from "mercadopago";
 
-const mercadopagoToken: RequestHandler = async (req, res, next) => {
+const mercadopagoToken: RequestHandler = async (_req, res, next) => {
   const mercadoPagoPublicKey = process.env.MERCADO_PAGO_TEST_PUBLIC_KEY;
   if (!mercadoPagoPublicKey) {
     console.log("Error: public key not defined");

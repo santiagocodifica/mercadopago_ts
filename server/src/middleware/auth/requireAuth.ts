@@ -1,6 +1,7 @@
 import { RequestHandler } from "express"
 import jwt from "jsonwebtoken"
-import User from "../models/userModel"
+import User from "../../models/userModel"
+import { UserI } from "../../types/schemas"
 
 const requireAuth: RequestHandler = async (req, res, next) => {
   const authorization = req.headers["authorization"]
@@ -16,7 +17,10 @@ const requireAuth: RequestHandler = async (req, res, next) => {
       throw Error("Token secret not set")
     }
     const { _id } = jwt.verify(token, process.env.SECRET) as { _id: string }
-    const user = await User.findOne({ _id })
+    const user: UserI | null = await User.findOne({ _id })
+    if(!user){
+      throw Error("User not authorized")
+    }
     req.user = user
     return next()
   }catch(error){

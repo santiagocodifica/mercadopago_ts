@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { ProductI } from "../types/schemas";
+import { ProductI, SubProductI } from "../types/schemas";
 
 const Schema = mongoose.Schema
 
-export const subProductSchema = new Schema({
+export const subProductSchema = new Schema<SubProductI>({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   previousPrice: { type: Number, required: true },
@@ -12,7 +12,11 @@ export const subProductSchema = new Schema({
   thumb: { type: String, required: true },
   size: { type: String, required: true },
   amount: { type: Number, required: true }
-})
+},{ _id: true })
+
+export const imageSchema = new Schema({
+  src: { type: String, required: true },
+},{ _id: true })
 
 const productSchema = new Schema<ProductI>({
   name: { type: String, required: true },
@@ -25,7 +29,7 @@ const productSchema = new Schema<ProductI>({
   onSale: { type: Boolean, required: true, default: false },
   description: { type: String, required: true },
   smallDescription: { type: String, required: true },
-  categories: [{ tye: String, required: true }],
+  categories: [{ type: String, required: true }],
   gender: { type: String, required: true },
   specifications: {
     color: { type: String, required: false },
@@ -36,9 +40,9 @@ const productSchema = new Schema<ProductI>({
     size: { type: String, required: true },
     amount: { type: Number, required: true }
   }],
-  thumb: { type: String, required: true },
-  thumbHover: { type: String, required: true },
-  images: [{ type: String, required: true }]
+  thumb: { type: String, required: false },
+  thumbHover: { type: String, required: false },
+  images: [imageSchema]
 })
 
 export default mongoose.model<ProductI>("product", productSchema)

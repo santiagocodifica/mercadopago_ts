@@ -1,6 +1,8 @@
 import { RequestHandler } from "express";
 import Product from "../models/productModel"
 import { ProductI } from "../types/schemas";
+import fs from "fs"
+import path from "path"
 
 export const getProducts: RequestHandler = async (_req, res) => {
   try{
@@ -34,9 +36,9 @@ export const getProductsBySearch: RequestHandler = async (req, res) => {
 }
 
 export const createProduct: RequestHandler = async (req, res) => {
-  const { data } = req.body
+  const data = req.body
   try{
-    const product = Product.create(data)
+    const product: ProductI = await Product.create(data)
     return res.status(200).json(product)
   }catch(error){
     console.log(error)
@@ -47,10 +49,10 @@ export const createProduct: RequestHandler = async (req, res) => {
 export const createImage: RequestHandler = async (req, res) => {
   const { productId } = req.params 
   try{
-    // only to update images
+    // only to upload images
     const product = await Product.findByIdAndUpdate(productId, {
-      $push: { images: [req.file.filename] }
-    })
+      $push: { images: { src: req.file?.filename } }
+    }, { new: true })
     return res.status(200).json(product)
   }catch(error){
     console.log(error)
@@ -78,7 +80,7 @@ export const updateProduct: RequestHandler = async (req, res) => {
         specifications: req.body.specifications,
         stock: req.body.stock
       }
-    })
+    }, { new: true })
     return res.status(200).json(product)
   }catch(error){
     console.log(error)
@@ -86,7 +88,25 @@ export const updateProduct: RequestHandler = async (req, res) => {
   }
 }
 
-export const updateImage: RequestHandler = async (_req, _res) => {
+export const updateImage: RequestHandler = async (req, res) => {
+  const { path: imgPath } = req.params
+  const { imageId } = req.query
+  try{
+    // delete previous image
+    const product: ProductI | null = await Product.findOne({ "images._id": imageId }, { "images.$": 1 })
+    if(!product){
+      throw Error("Could not find product to update")
+    }
+    const imgSrcToDelete: string = product.images[0].src
+    fs.unlinkSync(path.join(__dirname, "../../../client/public/imgs/products/", imgPath, imgSrcToDelete))
+    const newProduct = await Product.findOneAndUpdate({ "images._id": imageId }, {
+      $set: { "images.$.src": req.file?.filename }
+    }, { new: true })
+    return res.status(200).json(newProduct)
+  }catch(error){
+    console.log(error)
+    return res.status(400).json({ error: "Could not update image" })
+  }
 }
 
 export const deleteProduct: RequestHandler = async (_req, _res) => {

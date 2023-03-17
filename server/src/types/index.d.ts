@@ -1,12 +1,17 @@
-import { MercadoPagoResponse } from "mercadopago/utils/mercadopago-respose";
-import { UserI } from "../models/schemas";
+import { UserI } from "./schemas";
 
-export declare global {
+declare global {
   namespace Express {
     interface Request {
       user: UserI
-      mercadopagoResponse: MercadoPagoResponse
-      file: any
+      mercadopagoResponse?: any 
+      file?: any
+    }
+  }
+  namespace NodeJS {
+    interface ProcessEnv {
+      MONGO_URI: string
     }
   }
 }
+export {}

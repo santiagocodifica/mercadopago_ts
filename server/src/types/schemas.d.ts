@@ -1,4 +1,3 @@
-import { MercadoPagoResponse } from "mercadopago/utils/mercadopago-respose"
 import mongoose, { Types, Model } from "mongoose"
 
 export interface UserI extends mongoose.Document {
@@ -39,7 +38,7 @@ export interface ProductI extends mongoose.Document {
     fit: string
     weight: string
   }
-  stock: Array<stockItem>
+  stock: Array<StockItem>
   thumb: string
   thumbHover: string
   images: [{
@@ -55,7 +54,6 @@ export type StockItem = {
 }
 
 export interface SubProductI extends mongoose.Document {
-  _id: Types.ObjectId
   productId: Types.ObjectId
   name: string
   price: number
@@ -75,13 +73,13 @@ export interface OrderI extends mongoose.Document {
     phone?: string,
     location: Location
   }
-  products: Array<SubProduct>
+  products: Array<SubProductI>
   totalPrice: number
   orderStatus: string
-  mercadopagoData?: MercadoPagoResponse
+  mercadopagoData?: object 
 }
 
-export type Location = {
+export interface Location extends mongoose.Document {
   name: string
   country: "Uruguay"
   city: string

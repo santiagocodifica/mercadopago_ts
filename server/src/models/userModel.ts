@@ -18,7 +18,7 @@ export const locationSchema = new Schema({
 const userSchema = new Schema<UserI, UserIModel>({
   name: { type: String, required: true},
   email: { type: String, required: true },
-  phone: { type: String, required: true },
+  phone: { type: String, required: false },
   password: { type: String, required: true },
   role: { type: String, required: true, default: "customer" },
   orders: [{ type: Schema.Types.ObjectId, required: false }],
