@@ -10,23 +10,22 @@ import { validateOrderStock } from "../middleware/order/validateOrderStock"
 const router = express.Router()
 
 router.use(requireAuth)
-
+// POST
 router.post("/", validateOrderInputs, validateOrderStock, createOrder)
-router.post("/mercadopago", mercadopagoToken, mercadopagoPayment, createOrder) // createOrder => specify mercadopago or admin eg
+router.post("/mercadopago", mercadopagoToken, mercadopagoPayment, createOrder)
 
+//
+// CMS ROUTES
+//
 router.use(requireAdmin)
-
 // GET
-router.get("/", getOrders) // getOrders
-router.get("/:id", getOrder) // getOrder
-router.get("/status/:status", getOrdersByStatus) // getOrdersByStatus
-
+router.get("/", getOrders)
+router.get("/:id", getOrder)
+router.get("/status/:status", getOrdersByStatus)
 // POST
 // router.post("/admin") // createOrder directly from admin
-
 // PATCH
-router.patch("/:status/:id", updateOrderStatus) // updateOrderStatus
-
+router.patch("/:status/:id", updateOrderStatus)
 // DELETE
 // router.delete("/:id", deleteOrder) // deleteOrder
 
