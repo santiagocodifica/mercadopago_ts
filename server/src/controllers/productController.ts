@@ -101,7 +101,7 @@ export const updateProduct: RequestHandler = async (req, res) => {
     return res.status(200).json(product)
   }catch(error){
     console.log(error)
-    return res.status(400).json({ error: "Product not updated. Check input fields." })
+    return res.status(400).json({ error: "Failed to update product. Check input fields." })
   }
 }
 
@@ -151,7 +151,7 @@ export const updateImage: RequestHandler = async (req, res) => {
     }
   }catch(error){
     console.log(error)
-    return res.status(400).json({ error: "Could not update image" })
+    return res.status(400).json({ error: "Failed to update image" })
   }
 }
 
@@ -168,7 +168,7 @@ export const deleteProduct: RequestHandler = async (req, res) => {
     return res.status(200).json(product)
   }catch(error){
     console.log(error)
-    return res.status(404).json({ error: "Could not delete product" })
+    return res.status(404).json({ error: "Failed to delete product" })
   }
 }
 

@@ -51,7 +51,7 @@ export const createOrder: RequestHandler = async (req, res) => {
     })
     // check if this have been done
     if(!order){
-      throw Error("Order not created")
+      throw "Order not created"
     }
     // find the user that made the order
     // 
@@ -64,7 +64,7 @@ export const createOrder: RequestHandler = async (req, res) => {
     await Promise.all(order.products.map(async (orderedProduct: SubProductI) => {
       const product: ProductI | null = await Product.findById(orderedProduct.productId)
       if(!product){
-        throw Error("Could not find ordered product in catalog")
+        throw "Could not find ordered product in catalog"
       }
       const updatedStock: Array<StockItem> = await Promise.all(product.stock.map((item: StockItem) => {
         if(item.size === orderedProduct.size){
@@ -80,14 +80,14 @@ export const createOrder: RequestHandler = async (req, res) => {
       product.stock = updatedStock
       const saveProduct = await product.save()
       if(!saveProduct){
-        throw Error("Could not update product stock")
+        throw "Could not update product stock"
       }
     }))
     // SUCCESS
     return res.status(200).json(order)
   }catch(error){
     console.log(error)
-    return res.status(400).json({ error: error })
+    return res.status(400).json({ error: "There was a problem processing your order, please get in touch with us."})
   }
 }
 
