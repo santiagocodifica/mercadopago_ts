@@ -4,12 +4,14 @@ import mercadopagoPayment from "../middleware/mercadopago/mercadopagoPayment"
 import mercadopagoToken from "../middleware/mercadopago/mercadopagoToken"
 import requireAdmin from "../middleware/auth/requireAdmin"
 import requireAuth from "../middleware/auth/requireAuth"
+import { validateOrderInputs } from "../middleware/order/validateOrderInputs"
+import { validateOrderStock } from "../middleware/order/validateOrderStock"
 
 const router = express.Router()
 
 router.use(requireAuth)
 
-router.post("/", createOrder)
+router.post("/", validateOrderInputs, validateOrderStock, createOrder)
 router.post("/mercadopago", mercadopagoToken, mercadopagoPayment, createOrder) // createOrder => specify mercadopago or admin eg
 
 router.use(requireAdmin)
