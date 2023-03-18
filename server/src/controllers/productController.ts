@@ -17,7 +17,7 @@ export const getProducts: RequestHandler = async (_req, res) => {
 export const getProduct: RequestHandler = async (req, res) => {
   const { id } = req.params
   try{
-    const product = Product.findById(id)
+    const product = await Product.findById(id)
     return res.status(200).json(product)
   }catch(error){
     console.log(error)
@@ -27,8 +27,9 @@ export const getProduct: RequestHandler = async (req, res) => {
 
 export const getProductsBySearch: RequestHandler = async (req, res) => {
   const { name } = req.query
+  console.log(name)
   try{
-    const products = Product.find({ name: name }).sort({ createdAt: -1 })
+    const products = await Product.find({ name: name }).sort({ createdAt: -1 })
     return res.status(200).json(products)
   }catch(error){
     return res.status(404).json({ error: "Products not found" })

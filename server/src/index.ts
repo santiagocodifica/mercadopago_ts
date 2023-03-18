@@ -15,8 +15,8 @@ app.use((req, _res, next) => {
 })
 
 //api routes
-app.use("/api/v1/product", productRoutes)
 app.use("/api/v1/user", userRoutes)
+app.use("/api/v1/product", productRoutes)
 app.use("/api/v1/order", orderRoutes)
 
 //mongoDB connection

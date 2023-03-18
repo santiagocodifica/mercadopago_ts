@@ -1,6 +1,6 @@
 import express, { NextFunction } from "express"
 import { createImage, createProduct, deleteImage, deleteProduct, getProduct, getProducts, getProductsBySearch, updateImage, updateProduct } from "../controllers/productController"
-// import requireAdmin from "../middleware/auth/requireAdmin"
+import requireAdmin from "../middleware/auth/requireAdmin"
 import requireAuth from "../middleware/auth/requireAuth"
 import upload from "../middleware/multer/upload"
 import multerErrorHandler from "../middleware/multer/multerErrorHandler"
@@ -9,12 +9,12 @@ import { Request, Response } from "express"
 const router = express.Router()
 // GET
 router.get("/", getProducts) // getProducts
-router.get("/:id", getProduct) // getProduct
 router.get("/search", getProductsBySearch) // getProductsBySearch
+router.get("/:id", getProduct) // getProduct
 
 // ADMIN ROUTES
 router.use(requireAuth)
-// router.use(requireAdmin)
+router.use(requireAdmin)
 
 // POST
 router.post("/", createProduct) // createProduct

@@ -2,7 +2,7 @@ import { RequestHandler } from "express"
 import Order from "../models/orderModel"
 import User from "../models/userModel"
 import Product from "../models/productModel"
-import { OrderI, ProductI, StockItem, SubProductI, UserI } from "../types/schemas"
+import { OrderI, ProductI, StockItem, SubProductI } from "../types/schemas"
 
 export const getOrders: RequestHandler = async (_req, res) => {
   try{
@@ -40,9 +40,9 @@ export const createOrder: RequestHandler = async (req, res) => {
   try{
     const order: OrderI = await Order.create({
       customer: {
-        name: req.body.user.name,
-        email: req.body.user.email,
-        phone: req.body.user.phone || "",
+        name: req.user.name,
+        email: req.user.email,
+        phone: req.user.phone || "",
         location: req.body.location
       },
       products: req.body.products,
@@ -54,16 +54,12 @@ export const createOrder: RequestHandler = async (req, res) => {
       throw Error("Order not created")
     }
     // find the user that made the order
-    const user: UserI | null = await User.findById(req.user._id)
-    if(!user){
-      throw Error("Could not find User to assign order")
-    }
-    user.orders.push(order._id)
-    user.preparedCheckout = {}
-    const saveUser = await user.save()
-    if(!saveUser){
-      throw Error("Could not assign order to user")
-    }
+    // 
+    await User.findOneAndUpdate({ _id: req.user._id }, {
+      $push: { orders: order._id },
+      $set: { preparedCheckout: { } }
+    }, { new: true })
+    //
     // reduce product stock
     await Promise.all(order.products.map(async (orderedProduct: SubProductI) => {
       const product: ProductI | null = await Product.findById(orderedProduct.productId)
@@ -99,8 +95,8 @@ export const updateOrderStatus: RequestHandler = async (req, res) => {
   const { id, status } = req.params
   try{
     const order = await Order.findOneAndUpdate({ _id: id }, {
-      $set: { stauts: status }
-    })
+      $set: { orderStatus: status }
+    }, { new: true })
     return res.status(200).json(order)
   }catch(error){
     console.log(error)
