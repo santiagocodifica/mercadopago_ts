@@ -4,13 +4,13 @@ import User from "../../models/userModel"
 import { UserI } from "../../types/schemas"
 
 const requireAuth: RequestHandler = async (req: Request, res, next) => {
-  const authorization = req.headers["authorization"]
+  const authorization: string | undefined = req.headers["authorization"]
   if(!authorization){
-    return res.status(401).json({ error: "Usuario no autorizado" })
+    return res.status(401).json({ error: "User not authorized" })
   }
 
   const bearer = authorization.split(" ")
-  const token = bearer[1]
+  const token: string = bearer[1]
 
   try{
     if(!process.env.SECRET){
@@ -25,7 +25,7 @@ const requireAuth: RequestHandler = async (req: Request, res, next) => {
     return next()
   }catch(error){
     console.log(error)
-    return res.status(401).json({ error: "Usuario no autorizado"})
+    return res.status(401).json({ error: "User not authorized" })
   }
 }
 
