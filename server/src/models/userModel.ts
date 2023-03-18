@@ -54,13 +54,15 @@ userSchema.statics.signup = async function(name, email, password1, password2){
 
   const user: UserI = await this.create({ name, email, password: hash })
 
-  return user
+  const leanUser: UserI = await this.findOne({ _id: user._id }).lean()
+
+  return leanUser 
 }
 
 userSchema.statics.login = async function(email, password){
   if(!email || !password){ throw Error("Deben rellenarse todos los campos") }
 
-  const user: UserI | null = await this.findOne({ email })
+  const user: UserI | null = await this.findOne({ email }).lean()
   if(!user){
     throw Error("Email incorrecto")
   }

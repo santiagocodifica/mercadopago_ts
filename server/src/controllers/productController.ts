@@ -27,7 +27,6 @@ export const getProduct: RequestHandler = async (req, res) => {
 
 export const getProductsBySearch: RequestHandler = async (req, res) => {
   const { name } = req.query
-  console.log(name)
   try{
     const products = await Product.find({ name: name }).sort({ createdAt: -1 })
     return res.status(200).json(products)

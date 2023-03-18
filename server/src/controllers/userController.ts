@@ -3,7 +3,7 @@ import Product from "../models/productModel"
 import Order from "../models/orderModel"
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken"
-import { ProductI, SubProductI, UserI } from "../types/schemas";
+import { OrderI, ProductI, SubProductI, UserI } from "../types/schemas";
 
 const createToken = (_id: any) => {
   if(!process.env.SECRET){
@@ -15,9 +15,9 @@ const createToken = (_id: any) => {
 export const login: RequestHandler = async (req, res) => {
   const { email, password } = req.body
   try{
-    const user: any = await User.login(email, password)
+    const user: UserI = await User.login(email, password)
     const token = createToken(user._id)
-    return res.status(200).json({ ...user._doc, token })
+    return res.status(200).json({ ...user, token })
   }catch(error){
     console.log(error)
     return res.status(401).json({ error: "Login failed" })
@@ -26,11 +26,10 @@ export const login: RequestHandler = async (req, res) => {
 
 export const signup: RequestHandler = async (req, res) => {
   const { name, email, password1, password2 } = req.body
-  console.log(req.body)
   try{
-    const user: any = await User.signup(name, email, password1, password2)
+    const user: UserI = await User.signup(name, email, password1, password2)
     const token = createToken(user._id)
-    return res.status(200).json({ ...user._doc, token })
+    return res.status(200).json({ ...user, token })
   }catch(error){
     console.log(error)
     return res.status(401).json({ error: "Signup failed" })
@@ -62,13 +61,12 @@ export const getPreparedCheckout: RequestHandler = async (req, res) => {
   let totalPrice: number = 0
   const user: UserI = req.user
   try{
-    // calculate price
     if(!user.preparedCheckout.products){
       throw Error("Could not find selected products")
     }
+    // calculamos el precio total
     await Promise.all(user.preparedCheckout.products.map(async (product: SubProductI) => {
       const dbProduct: ProductI | null = await Product.findOne({ _id: product.productId })
-      console.log(dbProduct)
       if(!dbProduct){
         throw Error("Could not find selected products 2")
       }
@@ -90,7 +88,7 @@ export const getPreparedCheckout: RequestHandler = async (req, res) => {
 
 export const getUserOrders: RequestHandler = async (req, res) => {
   try{
-    const orders = await Order.find({ "_id": { $in: req.user.orders }}).sort({ createdAt: -1 })
+    const orders: Array<OrderI> = await Order.find({ "_id": { $in: req.user.orders } }).sort({ createdAt: -1 })
     return res.status(200).json(orders)
   }catch(error){
     console.log(error)
@@ -100,14 +98,12 @@ export const getUserOrders: RequestHandler = async (req, res) => {
 
 export const prepareUserCheckout: RequestHandler = async (req, res) => {
   const { location, products } = req.body
-  console.log(req.body)
-  const user: UserI = req.user
   try{
-    user.preparedCheckout = { products, location, totalPrice: 0 }
-    const savedUser = await user.save()
-    if(!savedUser){
-      throw Error("Could not prepare checkout")
-    }
+    const user: UserI | null = await User.findByIdAndUpdate(req.user._id, {
+      $set: {
+        preparedCheckout: { products, location, totalPrice: 0 }
+      }
+    }, { new: true })
     return res.status(200).json(user)
   }catch(error){
     console.log(error)

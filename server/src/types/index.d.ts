@@ -3,9 +3,8 @@ import { UserI } from "./schemas";
 declare global {
   namespace Express {
     export interface Request {
-      user: any
-      mercadopagoResponse?: any 
-      file?: any
+      user: UserI
+      mercadopagoResponse?: any
     }
   }
   namespace NodeJS {
