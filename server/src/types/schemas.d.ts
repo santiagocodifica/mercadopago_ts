@@ -42,13 +42,11 @@ export interface ProductI extends mongoose.Document {
   thumb: string
   thumbHover: string
   images: [{
-    _id: Types.ObjectId
     src: string
   }]
 }
 
 export type StockItem = {
-  _id: Types.ObjectId,
   size: string,
   amount: number
 }
@@ -66,7 +64,6 @@ export interface SubProductI extends mongoose.Document {
 }
 
 export interface OrderI extends mongoose.Document {
-  _id: Types.ObjectId,
   customer: {
     name: string
     email: string,

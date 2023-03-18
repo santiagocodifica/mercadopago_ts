@@ -12,7 +12,7 @@ const router = express.Router()
 router.use(requireAuth)
 // POST
 router.post("/", validateOrderInputs, validateOrderStock, createOrder)
-router.post("/mercadopago", mercadopagoToken, mercadopagoPayment, createOrder)
+router.post("/mercadopago",validateOrderInputs, validateOrderStock, mercadopagoToken, mercadopagoPayment, createOrder)
 
 //
 // CMS ROUTES
