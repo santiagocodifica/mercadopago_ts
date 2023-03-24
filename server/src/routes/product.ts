@@ -1,5 +1,5 @@
 import express, { NextFunction } from "express"
-import { createImage, createProduct, deleteImage, deleteProduct, getProduct, getProducts, getProductsBySearch, updateImage, updateProduct } from "../controllers/productController"
+import { createImage, createProduct, deleteImage, deleteProduct, getFilteredProducts, getProduct, getProducts, getProductsBySearch, updateImage, updateProduct } from "../controllers/productController"
 import requireAdmin from "../middleware/auth/requireAdmin"
 import requireAuth from "../middleware/auth/requireAuth"
 import upload from "../middleware/multer/upload"
@@ -10,6 +10,7 @@ const router = express.Router()
 // GET
 router.get("/", getProducts)
 router.get("/search", getProductsBySearch)
+router.get("/filter", getFilteredProducts)
 router.get("/:id", getProduct)
 
 //

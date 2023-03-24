@@ -14,6 +14,17 @@ export const getProducts: RequestHandler = async (_req, res) => {
   }
 }
 
+export const getFilteredProducts: RequestHandler = async(req, res) => {
+  const { filter, limit } = req.query
+  try{
+    const products = await Product.find({ [filter as string]: true }).limit(Number(limit))
+    return res.status(200).json(products)
+  }catch(error){
+    console.log(error)
+    return res.status(404).json({ error: "Failed to find products with current filter"})
+  }
+}
+
 export const getProduct: RequestHandler = async (req, res) => {
   const { id } = req.params
   try{
