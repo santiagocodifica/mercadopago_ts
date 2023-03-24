@@ -26,7 +26,7 @@ const userSchema = new Schema<UserI, UserIModel>({
   preparedCheckout: {
     location: locationSchema,
     products: [subProductSchema],
-    totalPrice: { type: Number, required: true }
+    totalPrice: { type: Number }
   }
 })
 
