@@ -12,7 +12,6 @@ interface ModalsContextI {
 type ModalType = "menuModal" | "otherModal"
 interface State {
   menuModal: ModalT
-  
 }
 type Action = {
   type: "OPEN" | "CLOSE"

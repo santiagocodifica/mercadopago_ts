@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { AddToCartButton } from "../features/cart"
 import { ProductImages, SizeSelector, useGetProduct } from "../features/products"
 import { StockItem } from "../types/schemas"
 
@@ -27,7 +28,7 @@ const Product = () => {
         <h2 className="font-serif text-5xl">{ product.name }</h2>
         <p className="text-primary2 leading-snug">{ product.description }</p>
         <SizeSelector stock={product.stock} selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
-        <button className="border border-primary1">Add to cart</button>
+        <AddToCartButton product={product} stockItem={selectedSize} />
       </div>
     </main>
   )

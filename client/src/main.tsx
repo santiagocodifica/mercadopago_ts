@@ -5,14 +5,17 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthContextProvider } from './features/auth'
 import { ModalsContextProvider } from './features/modals'
+import { CartContextProvider } from './features/cart'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
-        <ModalsContextProvider>
-          <App />
-        </ModalsContextProvider>
+        <CartContextProvider>
+          <ModalsContextProvider>
+            <App />
+          </ModalsContextProvider>
+        </CartContextProvider>
       </AuthContextProvider>
     </BrowserRouter>
   </React.StrictMode>,

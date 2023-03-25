@@ -52,6 +52,7 @@ export type StockItem = {
 }
 
 export interface SubProductI {
+  _id: string
   productId: string
   name: string
   price: number
