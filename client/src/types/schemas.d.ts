@@ -16,6 +16,7 @@ export interface UserI {
 }
 
 export interface ProductI {
+  _id: string
   name: string
   price: number
   previousPrice?: number

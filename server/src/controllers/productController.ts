@@ -21,7 +21,8 @@ export const getFilteredProducts: RequestHandler = async(req, res) => {
     return res.status(400).json({ error: "Wrong filter data" })
   }
 
-  const filtersArray = filter.split(" ").map((item: string) => {
+  const decodedFilter: string = decodeURIComponent(filter)
+  const filtersArray = decodedFilter.split(" ").map((item: string) => {
     return { [item]: true }
   })
 
