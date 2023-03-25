@@ -17,7 +17,7 @@ module.exports = {
         secondary5: "#3D5CFF"
       },
       fontFamily: {
-        serif: ["EB Garamond", "serif"]
+        serif: ["EB Garamond", "sans-serif"]
       }
     },
   },

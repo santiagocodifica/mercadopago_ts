@@ -1,10 +1,13 @@
-import { HomeProduct } from "../features/products"
+import { FeaturedProducts, HomeProduct, NewProducts } from "../features/products"
 
 const Home = () => {
   return(
-    <div>
-      This is the home
-      <HomeProduct /> 
+    <div className="">
+      <HomeProduct />
+      <div className="flex flex-col gap-40">
+        <NewProducts />
+        <FeaturedProducts />
+      </div>
     </div>
   )
 }
