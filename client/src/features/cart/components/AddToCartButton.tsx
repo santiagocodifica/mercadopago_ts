@@ -1,32 +1,42 @@
+import { useEffect, useState } from "react"
 import { AiOutlinePlus } from "react-icons/ai"
 import { ProductI, StockItem } from "../../../types/schemas"
+import { checkProductAvailability } from "../helpers/checkProductAvailability"
 import { useCartContext } from "../hooks/useCartContext"
 
 interface AddToCartButtonI {
   product: ProductI
-  stockItem: StockItem | null
+  selectedStockItem: StockItem | null
 }
 
-const AddToCartButton = ({ product, stockItem }: AddToCartButtonI) => {
-  const { dispatch } = useCartContext()
+const AddToCartButton = ({ product, selectedStockItem}: AddToCartButtonI) => {
+  const { cart, dispatch } = useCartContext()
+  const [isActive, setIsActive] = useState<boolean>(false)
+
+  useEffect(() => {
+    setIsActive(checkProductAvailability(product, selectedStockItem, cart))
+  },[selectedStockItem, cart])
 
   const handleClick = () => {
-    if(!stockItem){
+    if(!selectedStockItem){
       return
     }
     dispatch({
       type: "ADD_PRODUCT",
       payload: {
         product: product,
-        stockItem: stockItem
+        stockItem: selectedStockItem 
       }
-    })    
+    })
   }
 
-  return(
+  return (
     <button
-      className={`flex gap-8 border border-primary1 rounded p-2 w-fit place-items-center hover:bg-primary1 hover:text-white transition-all`}
-      disabled={stockItem ? false : true}
+      className={`
+        ${isActive ? "hover:bg-primary1 hover:text-white" : "border-primary3 text-primary3"}
+        flex gap-8 text-lg border border-primary1 rounded p-3 w-full md:w-fit justify-between place-items-center transition-all
+      `}
+      disabled={isActive ? false : true}
       onClick={handleClick}
     >
       <span>Add to cart</span>

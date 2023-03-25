@@ -28,7 +28,7 @@ const Product = () => {
         <h2 className="font-serif text-5xl">{ product.name }</h2>
         <p className="text-primary2 leading-snug">{ product.description }</p>
         <SizeSelector stock={product.stock} selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
-        <AddToCartButton product={product} stockItem={selectedSize} />
+        <AddToCartButton product={product} selectedStockItem={selectedSize} />
       </div>
     </main>
   )
