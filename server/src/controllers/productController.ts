@@ -16,8 +16,17 @@ export const getProducts: RequestHandler = async (_req, res) => {
 
 export const getFilteredProducts: RequestHandler = async(req, res) => {
   const { filter, limit } = req.query
+
+  if(typeof filter !== "string"){
+    return res.status(400).json({ error: "Wrong filter data" })
+  }
+
+  const filtersArray = filter.split(" ").map((item: string) => {
+    return { [item]: true }
+  })
+
   try{
-    const products = await Product.find({ [filter as string]: true }).limit(Number(limit))
+    const products = await Product.find({ $and: filtersArray }).limit(Number(limit))
     return res.status(200).json(products)
   }catch(error){
     console.log(error)
