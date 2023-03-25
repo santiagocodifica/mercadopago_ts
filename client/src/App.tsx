@@ -5,6 +5,7 @@ import Navbar from "./layouts/Navbar"
 import Catalog from "./pages/Catalog"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
+import Product from "./pages/Product"
 import Signup from "./pages/Signup"
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="" element={ <Home /> } />
         <Route path="catalog" element={ <Catalog /> } />
+        <Route path="product/:id" element={ <Product /> } />
         <Route path="signup" element={ <Signup /> } />
         <Route path="login" element={ <Login /> } />
       </Routes>

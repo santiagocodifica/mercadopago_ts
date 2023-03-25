@@ -38,7 +38,8 @@ export interface ProductI {
   thumb: string
   thumbHover: string
   images: [{
-    src: string
+    src: string,
+    _id: string
   }]
 }
 

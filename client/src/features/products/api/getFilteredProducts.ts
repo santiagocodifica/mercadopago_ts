@@ -30,15 +30,5 @@ export const useGetFilteredProducts = () => {
       })
   }
 
-  // useEffect(() => {
-    // filteredProductsApi(filter, limit)
-      // .then(products => {
-        // setProducts(products) 
-      // })
-      // .catch(err => {
-        // setError(err)
-      // })
-  // },[])
-
   return { getProducts, products, error }
 }
