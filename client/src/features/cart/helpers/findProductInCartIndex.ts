@@ -5,11 +5,9 @@ export const findProductInCartIndex = (product: ProductI, stockItem: StockItem, 
     return null
   }
 
-  const productInCartIndex = cart.findIndex((subproduct: SubProductI) => {
-    subproduct.productId === product._id && stockItem.size === subproduct.size
-  })
+  const productInCartIndex = cart.findIndex((subproduct: SubProductI) => subproduct.productId === product._id && stockItem.size === subproduct.size)
 
-  if(productInCartIndex > 0){
+  if(productInCartIndex >= 0){
     return productInCartIndex
   }else{
     return null

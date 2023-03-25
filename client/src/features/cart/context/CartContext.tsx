@@ -35,7 +35,7 @@ const cartReducer = (state: State, action: Action) => {
       const stockItem = action.payload.stockItem
       const productInCartIndex: number | null = findProductInCartIndex(product, stockItem, state.cart)
       // Should find a cleaner way to handle this with more helper functions
-      if(productInCartIndex){ // add 1
+      if(typeof productInCartIndex === "number"){ // add 1
         const updatedCart = [...state.cart || []] // risky line, I know that the ...state.cart is valid because I check it in the findProductInCart function.
         const updatedSubproduct: SubProductI = { ...updatedCart[productInCartIndex] }
         if(updatedSubproduct.amount < stockItem.amount){
@@ -46,14 +46,19 @@ const cartReducer = (state: State, action: Action) => {
         return { cart: updatedCart }
       }else{ // insert new subproduct
         const subproduct = createSubproduct(product, stockItem)
-        if(state.cart){ //if cart is not null, then update it
-          if(stockItem.amount > 0){ // if item to add stock > 0, add it to the cart
-            return { cart: [subproduct, ...state.cart] }
-          }else{ // if not, do not add it to the cart
-            return { cart: state.cart }
-          }
-        }else{ //if cart is null, then just add an array with the new subproduct
+        // multiple posibilities
+        if(state.cart && stockItem.amount > 0){// add new item
+          localStorage.setItem("cart", JSON.stringify([subproduct, ...state.cart]))
+          return { cart: [subproduct, ...state.cart] }
+        }else if(state.cart && stockItem.amount <= 0){ // maintain current cart
+          localStorage.setItem("cart", JSON.stringify(state.cart))
+          return { cart: state.cart }
+        }else if(!state.cart && stockItem.amount > 0){ // cart is empty and we have to push new item
+          localStorage.setItem("cart", JSON.stringify([subproduct]))
           return { cart: [subproduct] }
+        }else{ // the cart is empty and there is no stock
+          localStorage.removeItem("cart")
+          return { cart: null }
         }
       }
     }
