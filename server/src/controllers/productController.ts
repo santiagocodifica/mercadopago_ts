@@ -15,19 +15,21 @@ export const getProducts: RequestHandler = async (_req, res) => {
 }
 
 export const getFilteredProducts: RequestHandler = async(req, res) => {
-  const { filter, limit } = req.query
+  const { booleans, gender } = req.query
 
-  if(typeof filter !== "string"){
+  console.log("enters")
+
+  if(typeof booleans !== "string"){
     return res.status(400).json({ error: "Wrong filter data" })
   }
 
-  const decodedFilter: string = decodeURIComponent(filter)
-  const filtersArray = decodedFilter.split(" ").map((item: string) => {
+  const decodedBooleans: string = decodeURIComponent(booleans)
+  const filtersArray = decodedBooleans.split(" ").map((item: string) => {
     return { [item]: true }
   })
 
   try{
-    const products = await Product.find({ $and: filtersArray }).limit(Number(limit))
+    const products = await Product.find({ $and: [ ...filtersArray, gender ? { gender: gender } : {}] })
     return res.status(200).json(products)
   }catch(error){
     console.log(error)

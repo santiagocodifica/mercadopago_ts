@@ -1,8 +1,14 @@
+import { useEffect } from "react"
 import { useGetFilteredProducts } from "../api/getFilteredProducts"
 import NewEntryTag from "../components/NewEntryButton"
 
 const HomeProduct = () => {
-  const { products } = useGetFilteredProducts("inHomeBanner active", "1")
+  const { getProducts, products } = useGetFilteredProducts()
+
+  useEffect(() => {
+    getProducts("inHomeBanner")
+  },[])
+
   return( products &&
     <main className="w-full md:h-screen mt-40 md:mt-0 mb-40 md:mb-0 p-4 md:p-0 md:flex md:place-items-center md:place-content-center">
       { products.map((product) => { return(

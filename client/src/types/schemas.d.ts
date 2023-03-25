@@ -42,6 +42,8 @@ export interface ProductI {
   }]
 }
 
+export type gender = "men" | "women" | "unisex"
+
 export type StockItem = {
   _id: string
   size: string,

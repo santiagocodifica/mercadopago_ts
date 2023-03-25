@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ProductI } from "../../../types/schemas"
 
-const filteredProductsApi = async (filter: string, limit: string) => {
-  const encodedFilter = encodeURIComponent(filter)
-  const res = await fetch(`/api/v1/product/filter/?filter=${encodedFilter}&limit=${limit}`, {
-    method: "GET"
-  })
+const filteredProductsApi = async (booleans: string, gender?: string) => {
+  const encodedBooleans= encodeURIComponent(booleans)
+
+  let URI = `/api/v1/product/filter/?booleans=${encodedBooleans}`
+  if(typeof gender === "string"){
+    URI = `/api/v1/product/filter/?booleans=${encodedBooleans}&gender=${gender}`
+  }
+  const res = await fetch(URI, { method: "GET" })
   const json = await res.json()
   if(!res.ok){
     throw json.error
@@ -13,19 +16,29 @@ const filteredProductsApi = async (filter: string, limit: string) => {
   return json
 }
 
-export const useGetFilteredProducts = (filter: string, limit: string) => {
+export const useGetFilteredProducts = () => {
   const [products, setProducts] = useState<Array<ProductI> | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    filteredProductsApi(filter, limit)
+  const getProducts = (filter: string, gender?: string) => {
+    filteredProductsApi(filter, gender)
       .then(products => {
-        setProducts(products) 
+        setProducts(products)
       })
       .catch(err => {
         setError(err)
       })
-  },[])
+  }
 
-  return { products, error }
+  // useEffect(() => {
+    // filteredProductsApi(filter, limit)
+      // .then(products => {
+        // setProducts(products) 
+      // })
+      // .catch(err => {
+        // setError(err)
+      // })
+  // },[])
+
+  return { getProducts, products, error }
 }
