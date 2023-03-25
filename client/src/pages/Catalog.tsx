@@ -18,7 +18,7 @@ const Catalog = () => {
 
   return(
     <main className="p-4 md:p-8">
-      <h2 className="mt-40 md:mt-60 font-serif text-5xl mb-20">Selected sneakers for everyone</h2>
+      <h2 className="mt-40 md:mt-60 font-serif text-5xl mb-20">Selected sneakers for { searchParams.get("gender") ? searchParams.get("gender") : "everyone" }.</h2>
       { products &&
         <ProductsList products={products} />
       }
