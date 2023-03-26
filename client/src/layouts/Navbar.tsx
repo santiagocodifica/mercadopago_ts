@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return(
     <header className="fixed top-0 z-20 w-full px-4 md:px-8 py-8 flex gap-4 place-items-center md:place-items-baseline">
-      <h1 className="text-2xl font-serif grow md:grow-0">
+      <h1 className="text-2xl font-serif grow md:grow-0 hover:text-primary3 transition-all">
         <Link to="">New Arrival</Link>
       </h1>
       <MenuButton />

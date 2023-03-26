@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
-import { LogoutButton } from "../features/auth"
+import { LogoutButton, useAuthContext } from "../features/auth"
 import { useModalsContext } from "../features/modals"
 
 const Menu = () => {
-
+  const { user } = useAuthContext()
   const { menuModal, dispatch }: any = useModalsContext()
 
   const handleClick = () => {
@@ -31,11 +31,19 @@ const Menu = () => {
       </div>
       <div>
         <h2>Other</h2>
-        <ul className="text-primary2">
-          <li>Account</li>
-          <li>Cart</li>
-          <li className="text-secondary1"><LogoutButton /></li>
-        </ul>
+        { user
+          ?
+          <ul className="text-primary2">
+            <li>Account</li>
+            <li>Cart</li>
+            <li className="text-secondary1"><LogoutButton /></li>
+          </ul>
+          :
+          <ul className="text-primary2">
+            <li><Link to="login" onClick={handleClick}>Log in</Link></li>
+            <li><Link to="signup" onClick={handleClick}>Sign Up</Link></li>
+          </ul>
+        }
       </div>
     </div>
   )
