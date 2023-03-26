@@ -1,7 +1,8 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Outlet } from "react-router-dom"
 import Footer from "./layouts/Footer"
 import Menu from "./layouts/Menu"
 import Navbar from "./layouts/Navbar"
+import Cart from "./pages/Cart"
 import Catalog from "./pages/Catalog"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
@@ -11,16 +12,16 @@ import Signup from "./pages/Signup"
 function App() {
   return (
     <div className="text-primary1">
-      <Navbar />
-      <Menu />
       <Routes>
-        <Route path="" element={ <Home /> } />
-        <Route path="catalog" element={ <Catalog /> } />
-        <Route path="product/:id" element={ <Product /> } />
-        <Route path="signup" element={ <Signup /> } />
-        <Route path="login" element={ <Login /> } />
+        <Route path="" element={<><Navbar /><Menu /><Outlet /><Footer /></>}>
+          <Route path="" element={ <Home /> } />
+          <Route path="catalog" element={ <Catalog /> } />
+          <Route path="product/:id" element={ <Product /> } />
+          <Route path="cart" element={ <Cart /> } />
+        </Route>
+        <Route path="signup" element={<><Navbar /><Signup /></>} />
+        <Route path="login" element={ <><Navbar /><Login /></> } />
       </Routes>
-      <Footer />
     </div>
   )
 }
