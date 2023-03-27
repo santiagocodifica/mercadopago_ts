@@ -1,5 +1,5 @@
 import express from "express"
-import { createOrder, getOrder, getOrders, getOrdersByStatus, updateOrderStatus } from "../controllers/orderController"
+import { createOrder, getOrder, getOrders, getOrdersByStatus, prepareOrder, updateOrderStatus } from "../controllers/orderController"
 import mercadopagoPayment from "../middleware/mercadopago/mercadopagoPayment"
 import mercadopagoToken from "../middleware/mercadopago/mercadopagoToken"
 import requireAdmin from "../middleware/auth/requireAdmin"
@@ -13,7 +13,7 @@ router.use(requireAuth)
 // POST
 router.post("/", validateOrderInputs, validateOrderStock, createOrder)
 router.post("/mercadopago",validateOrderInputs, validateOrderStock, mercadopagoToken, mercadopagoPayment, createOrder)
-
+router.post("/prepareOrder", prepareOrder) // prepareOrder
 //
 // CMS ROUTES
 //

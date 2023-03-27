@@ -1,4 +1,4 @@
-import { RequestHandler } from "express"
+import { Request, Response, RequestHandler } from "express"
 import Order from "../models/orderModel"
 import User from "../models/userModel"
 import Product from "../models/productModel"
@@ -36,8 +36,40 @@ export const getOrdersByStatus: RequestHandler = async (req, res) => {
   }
 }
 
-export const createOrder: RequestHandler = async (req, res) => {
+export const prepareOrder = async (req: Request, res: Response ) => {
+  const { location, products } = req.body
   try{
+    if(!location || !products){
+      throw "Missing fields"
+    }
+    if(!req.user){
+      throw "User not logged in"
+    }
+    // calculate totalPrice, then push the data.
+    let totalPrice: number = 0
+    await Promise.all(products.forEach((product: SubProductI) => {
+      const productTotal = product.price * product.amount 
+      totalPrice = totalPrice + productTotal
+    }))
+    
+    const user = await User.findByIdAndUpdate(req.user._id, {
+      $set: {
+        preparedCheckout: { location, products, totalPrice }
+      }
+    }, { new: true })
+
+    return res.status(200).json(user)
+  }catch(error){
+    console.log(error)
+    return res.status(404).json(error)
+  }
+}
+
+export const createOrder = async (req: Request, res: Response) => {
+  try{
+    if(!req.user){ // I am checking this in validateOrderInputs for security, but ts wants to do it aggain
+      throw "User is not logged in"
+    }
     const order: OrderI = await Order.create({
       customer: {
         name: req.user.name,
