@@ -1,6 +1,6 @@
-import { RequestHandler } from "express"
+import { NextFunction, Request, Response } from "express"
 
-const requireAdmin: RequestHandler = (req, res, next) => {
+const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
   if(!req.user){
     return res.status(401).json({ error: "You have to be logged in to access this page" })
   }
