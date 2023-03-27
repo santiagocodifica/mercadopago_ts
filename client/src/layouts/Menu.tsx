@@ -35,7 +35,7 @@ const Menu = () => {
           ?
           <ul className="text-primary2">
             <li>Account</li>
-            <li>Cart</li>
+            <li><Link to="/cart">Cart</Link></li>
             <li className="text-secondary1"><LogoutButton /></li>
           </ul>
           :

@@ -7,7 +7,7 @@ export const useRequireAuth = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(!user){
+    if(!user || user.role !== "customer"){
       navigate("/login")
     }
   },[user])
