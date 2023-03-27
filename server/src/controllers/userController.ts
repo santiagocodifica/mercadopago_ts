@@ -1,7 +1,7 @@
 import User from "../models/userModel"
 import Product from "../models/productModel"
 import Order from "../models/orderModel"
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response } from "express";
 import jwt from "jsonwebtoken"
 import { OrderI, ProductI, SubProductI, UserI } from "../types/schemas";
 
@@ -57,11 +57,11 @@ export const getUser: RequestHandler = async (req, res) => {
   }
 }
 
-export const getPreparedCheckout: RequestHandler = async (req, res) => {
+export const getPreparedCheckout = async (req: Request, res: Response) => {
   let totalPrice: number = 0
-  const user: UserI = req.user
+  const user = req.user
   try{
-    if(!user.preparedCheckout.products){
+    if(!user || !user.preparedCheckout.products){
       throw Error("Could not find selected products")
     }
     // calculamos el precio total
@@ -74,8 +74,8 @@ export const getPreparedCheckout: RequestHandler = async (req, res) => {
     }))
     // set the preparedCheckout object to send to client
     const preparedCheckout = {
-      products: req.user.preparedCheckout.products,
-      location: req.user.preparedCheckout.location,
+      products: user.preparedCheckout.products,
+      location: user.preparedCheckout.location,
       totalPrice
     }
     // sent object to client
@@ -86,8 +86,11 @@ export const getPreparedCheckout: RequestHandler = async (req, res) => {
   }
 }
 
-export const getUserOrders: RequestHandler = async (req, res) => {
+export const getUserOrders = async (req: Request, res: Response) => {
   try{
+    if(!req.user){
+      throw "user not logged in"
+    }
     const orders: Array<OrderI> = await Order.find({ "_id": { $in: req.user.orders } }).sort({ createdAt: -1 })
     return res.status(200).json(orders)
   }catch(error){
@@ -96,9 +99,12 @@ export const getUserOrders: RequestHandler = async (req, res) => {
   }
 }
 
-export const prepareUserCheckout: RequestHandler = async (req, res) => {
+export const prepareUserCheckout = async (req: Request, res: Response) => {
   const { location, products } = req.body
   try{
+    if(!req.user){
+      throw "User not logged in"
+    }
     const user: UserI | null = await User.findByIdAndUpdate(req.user._id, {
       $set: {
         preparedCheckout: { products, location, totalPrice: 0 }
@@ -111,10 +117,13 @@ export const prepareUserCheckout: RequestHandler = async (req, res) => {
   }
 }
 
-export const createUserLocation: RequestHandler = async (req, res) => {
+export const createUserLocation = async (req: Request, res: Response) => {
   const data = req.body
-  const user: UserI = req.user
+  const user = req.user
   try{
+    if(!user){
+      throw "User not logged in"
+    }
     user.locations.push(data)
     const savedUser = await user.save()
     if(!savedUser){
@@ -127,9 +136,12 @@ export const createUserLocation: RequestHandler = async (req, res) => {
   }
 }
 
-export const updateUser: RequestHandler = async (req, res) => {
+export const updateUser = async (req: Request, res: Response) => {
   const { data } = req.body
   try{
+    if(!req.user){
+      throw "User not logged in"
+    }
     const user: UserI | null = await User.findByIdAndUpdate(req.user._id, {
       $set: {
         name: data.name,
@@ -144,9 +156,12 @@ export const updateUser: RequestHandler = async (req, res) => {
   }
 }
 
-export const deleteUser: RequestHandler = async (req, res) => {
-  const user: UserI = req.user
+export const deleteUser = async (req: Request, res: Response) => {
+  const user = req.user
   try{
+    if(!user){
+      throw "User not logged in"
+    }
     const deleteUser: UserI | null = await User.findByIdAndDelete(user._id)
     return res.status(200).json(deleteUser)
   }catch(error){
@@ -155,10 +170,13 @@ export const deleteUser: RequestHandler = async (req, res) => {
   }
 }
 
-export const deleteUserLocation: RequestHandler = async (req, res) => {
+export const deleteUserLocation = async (req: Request, res: Response) => {
   const { id } = req.params
-  const user: UserI = req.user
+  const user = req.user
   try{
+    if(!user){
+      throw "User not logged in"
+    }
     const updatedUser: UserI | null = await User.findByIdAndUpdate(user._id, {
       $pull: { locations: { _id: id } }
     }, { new: true })
