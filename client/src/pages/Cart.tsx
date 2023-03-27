@@ -6,7 +6,7 @@ const Cart = () => {
 
   return(
     <main className="p-4 md:p-8 mt-52">
-      { cart
+      { cart && cart.length > 0
         ?
         <>
           <h2 className="uppercase text-primary2 mb-6">Products in Cart:</h2>

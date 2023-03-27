@@ -2,6 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 import { ProductI, StockItem, SubProductI } from "../../../types/schemas";
 import { createSubproduct } from "../helpers/createSubproduct";
 import { findProductInCartIndex } from "../helpers/findProductInCartIndex";
+import { findSubproductInCartIndex } from "../helpers/findSubproductInCartIndex";
 
 interface CartContextI {
   cart: Array<SubProductI> | null
@@ -14,6 +15,7 @@ type Action =
 | { type: "SET", payload: Array<SubProductI> }
 | { type: "CLEAR" }
 | { type: "ADD_PRODUCT", payload: { product: ProductI, stockItem: StockItem }}
+| { type: "INCREASE_PRODUCT", payload: SubProductI }
 | { type: "DECREASE_PRODUCT", payload: SubProductI }
 | { type: "REMOVE_PRODUCT", payload: SubProductI }
 
@@ -62,24 +64,30 @@ const cartReducer = (state: State, action: Action) => {
         }
       }
     }
-    case "DECREASE_PRODUCT": {
-      if(!state.cart){ // this would mean the cart is empty...
-        return { cart: null }
-      }
-      const subproductToDecrease = action.payload
-      const updatedCart: Array<SubProductI> = state.cart.map(subproduct => {
-        // if _ids are the same, return an updated subproduct
-        if(subproduct.productId === subproductToDecrease.productId && subproduct.size === subproductToDecrease.size && subproduct.amount > 1){
-          // we are in current subproduct and with amount > 1
-          const updatedProduct = subproduct
-          const newAmount = subproduct.amount - 1
-          updatedProduct.amount = newAmount
-          return updatedProduct
-        }else{
-          // this product should not be changed, return the same
-          return subproduct
+    case "INCREASE_PRODUCT": {
+      const cartProductIndex = findSubproductInCartIndex(action.payload, state.cart)
+      const updatedCart = [...state.cart || []]
+      if(typeof cartProductIndex === "number"){
+        const updatedSubproduct: SubProductI = { ...updatedCart[cartProductIndex] }
+        if(updatedSubproduct.amount < action.payload.stock){
+          updatedSubproduct.amount ++
         }
-      })
+        updatedCart[cartProductIndex] = updatedSubproduct
+      }
+      localStorage.setItem("cart", JSON.stringify(updatedCart))
+      return { cart: updatedCart }
+    }
+    case "DECREASE_PRODUCT": {
+      const cartProductIndex = findSubproductInCartIndex(action.payload, state.cart)
+      const updatedCart = [...state.cart || []]
+      if(typeof cartProductIndex === "number"){
+        const updatedSubproduct: SubProductI = { ...updatedCart[cartProductIndex] }
+        if(updatedSubproduct.amount > 1){
+          updatedSubproduct.amount --
+        }
+        updatedCart[cartProductIndex] = updatedSubproduct
+      }
+      localStorage.setItem("cart", JSON.stringify(updatedCart))
       return { cart: updatedCart }
     }
     case "REMOVE_PRODUCT": {
@@ -88,6 +96,7 @@ const cartReducer = (state: State, action: Action) => {
       }
       const productToDelete: SubProductI = action.payload
       const updatedCart: Array<SubProductI> = state.cart.filter(subproduct => subproduct.productId !== productToDelete.productId && subproduct.size !== productToDelete.size)
+      localStorage.setItem("cart", JSON.stringify(updatedCart))
       return { cart: updatedCart }
     }
     default: return state

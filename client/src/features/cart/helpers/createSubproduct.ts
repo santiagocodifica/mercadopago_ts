@@ -11,7 +11,8 @@ export const createSubproduct = (product: ProductI, stockItem: StockItem) => {
     smallDescription: product.smallDescription,
     thumb: product.thumb,
     size: stockItem.size,
-    amount: 1
+    amount: 1,
+    stock: stockItem.amount
   } 
 
   return subproduct

@@ -61,6 +61,7 @@ export interface SubProductI {
   thumb: string
   size: string
   amount: number
+  stock: number
 }
 
 export interface OrderI {
