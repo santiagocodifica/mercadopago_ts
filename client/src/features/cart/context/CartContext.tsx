@@ -69,7 +69,7 @@ const cartReducer = (state: State, action: Action) => {
       const subproductToDecrease = action.payload
       const updatedCart: Array<SubProductI> = state.cart.map(subproduct => {
         // if _ids are the same, return an updated subproduct
-        if(subproduct._id === subproductToDecrease._id && subproduct.amount > 1){
+        if(subproduct.productId === subproductToDecrease.productId && subproduct.size === subproductToDecrease.size && subproduct.amount > 1){
           // we are in current subproduct and with amount > 1
           const updatedProduct = subproduct
           const newAmount = subproduct.amount - 1
@@ -87,7 +87,7 @@ const cartReducer = (state: State, action: Action) => {
         return { cart: null }
       }
       const productToDelete: SubProductI = action.payload
-      const updatedCart: Array<SubProductI> = state.cart.filter(subproduct => subproduct._id !== productToDelete._id)
+      const updatedCart: Array<SubProductI> = state.cart.filter(subproduct => subproduct.productId !== productToDelete.productId && subproduct.size !== productToDelete.size)
       return { cart: updatedCart }
     }
     default: return state

@@ -52,7 +52,6 @@ export type StockItem = {
 }
 
 export interface SubProductI {
-  _id: string // THIS IS WRONG, DELETE LATER
   productId: string
   name: string
   price: number
