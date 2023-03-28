@@ -1,9 +1,9 @@
-import { RequestHandler, Request } from "express"
+import { Request, Response, NextFunction } from "express"
 import jwt from "jsonwebtoken"
 import User from "../../models/userModel"
 import { UserI } from "../../types/schemas"
 
-const requireAuth: RequestHandler = async (req: Request, res, next) => {
+const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   const authorization: string | undefined = req.headers["authorization"]
   if(!authorization){
     return res.status(401).json({ error: "User not authorized" })

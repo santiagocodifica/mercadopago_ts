@@ -14,6 +14,7 @@ export interface UserI {
     totalPrice?: number
   }
 }
+export type UntokenizedUserI = Omit<UserI | "token">
 
 export interface ProductI {
   _id: string

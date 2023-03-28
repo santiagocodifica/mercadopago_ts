@@ -30,7 +30,7 @@ const AddToCartButton = ({ product, selectedStockItem}: AddToCartButtonI) => {
     })
   }
 
-  return (
+ return (
     <button
       className={`
         ${isActive ? "hover:bg-primary1 hover:text-white" : "border-primary3 text-primary3"}

@@ -21,10 +21,11 @@ export const authReducer = (state: State, action: Action) => {
       return { user: action.payload }
     case "LOGOUT":
       return { user: null }
-    case "UPDATE":
+    case "UPDATE": {
       const updatedUser = action.payload
       const token = state.user?.token || ""
       return { user: { token, updatedUser } }
+    }
     default:
       return state
   }
