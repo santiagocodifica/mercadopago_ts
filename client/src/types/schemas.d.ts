@@ -79,6 +79,7 @@ export interface OrderI {
 }
 
 export interface Location {
+  _id: string
   name: string
   country: "Uruguay"
   city: string
@@ -86,3 +87,5 @@ export interface Location {
   postalCode: string
   comment?: string
 }
+
+export type LocationFormData = Omit<Location | "id">

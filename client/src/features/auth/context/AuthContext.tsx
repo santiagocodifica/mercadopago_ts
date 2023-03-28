@@ -1,5 +1,5 @@
 import { createContext, useReducer, useEffect } from "react"
-import { UserI } from "../../../types/schemas"
+import { UntokenizedUserI, UserI } from "../../../types/schemas"
 
 interface AuthContextI {
   user: UserI | null
@@ -11,7 +11,7 @@ type State = {
 type Action =
 | { type: "LOGIN", payload: UserI }
 | { type: "LOGOUT" }
-| { type: "UPDATE", payload: UserI }
+| { type: "UPDATE", payload: UntokenizedUserI }
 
 export const AuthContext = createContext<AuthContextI>({ user: null, dispatch: () => null })
 
@@ -22,9 +22,9 @@ export const authReducer = (state: State, action: Action) => {
     case "LOGOUT":
       return { user: null }
     case "UPDATE": {
-      const updatedUser = action.payload
       const token = state.user?.token || ""
-      return { user: { token, updatedUser } }
+      localStorage.setItem("user", JSON.stringify({ token, ...action.payload }))
+      return { user: { token, ...action.payload } }
     }
     default:
       return state
@@ -36,7 +36,7 @@ interface AuthContextProviderI {
 }
 
 export const AuthContextProvider = ({ children }: AuthContextProviderI) => {
-  const [state, dispatch] = useReducer(authReducer, { user: null })
+  const [state, dispatch] = useReducer(authReducer, { user: null } as State)
 
   console.log(state)
 

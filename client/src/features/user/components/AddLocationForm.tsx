@@ -1,7 +1,8 @@
 import { useState } from "react"
-import { Location } from "../../../types/schemas"
+import { LocationFormData } from "../../../types/schemas"
 import { useModalsContext } from "../../modals"
 import { useShippingLocation } from "../api/addShippingLocation"
+
 
 const AddLocationForm = () => {
   const [name, setName] = useState<string>("")
@@ -15,8 +16,14 @@ const AddLocationForm = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-    const data: Location = { name, country, city, address, postalCode, comment }
+    const data: LocationFormData = { name, country, city, address, postalCode, comment }
     await addShippingLocation(data)
+    dispatch({
+      type: "CLOSE",
+      payload: "addLocationModal"
+    })
+  }
+  const handleCancel = () => {
     dispatch({
       type: "CLOSE",
       payload: "addLocationModal"
@@ -72,7 +79,7 @@ const AddLocationForm = () => {
       </div> 
       <div className="flex gap-2 mt-4">
         <button type="submit" className="p-2 border border-primary1 text-lg rounded grow">Create location</button>
-        <button type="button" className="p-2 bg-primary3 text-lg rounded">Cancel</button>
+        <button type="button" onClick={handleCancel} className="p-2 bg-primary3 text-lg rounded">Cancel</button>
       </div>
     </form>
   )
