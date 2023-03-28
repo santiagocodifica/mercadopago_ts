@@ -17,7 +17,7 @@ export const login: RequestHandler = async (req, res) => {
   try{
     const user: UserI = await User.login(email, password)
     const token = createToken(user._id)
-    return res.status(200).json({ ...user, token })
+    return res.status(200).json({ token, _id: user._id })
   }catch(error){
     console.log(error)
     return res.status(401).json({ error: "Login failed" })
@@ -29,7 +29,7 @@ export const signup: RequestHandler = async (req, res) => {
   try{
     const user: UserI = await User.signup(name, email, password1, password2)
     const token = createToken(user._id)
-    return res.status(200).json({ ...user, token })
+    return res.status(200).json({ token, _id: user._id })
   }catch(error){
     console.log(error)
     return res.status(401).json({ error: "Signup failed" })
