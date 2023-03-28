@@ -3,19 +3,17 @@ import { UserI } from "../../../types/schemas"
 
 interface AuthContextI {
   user: UserI | null
-  dispatch?: any //Debería declarar mejor la función dispatch
+  dispatch: React.Dispatch<Action>
 }
-
 type State = {
   user: UserI | null
 }
+type Action =
+| { type: "LOGIN", payload: UserI }
+| { type: "LOGOUT" }
+| { type: "UPDATE", payload: UserI }
 
-type Action = {
-  type: string,
-  payload: UserI | null //No siempre necesitamos un payload, por ej para hacer logout
-}
-
-export const AuthContext = createContext<AuthContextI>({ user: null })
+export const AuthContext = createContext<AuthContextI>({ user: null, dispatch: () => null })
 
 export const authReducer = (state: State, action: Action) => {
   switch(action.type){
@@ -23,6 +21,10 @@ export const authReducer = (state: State, action: Action) => {
       return { user: action.payload }
     case "LOGOUT":
       return { user: null }
+    case "UPDATE":
+      const updatedUser = action.payload
+      const token = state.user?.token || ""
+      return { user: { token, updatedUser } }
     default:
       return state
   }
