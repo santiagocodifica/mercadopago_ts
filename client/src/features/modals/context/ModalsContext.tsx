@@ -4,21 +4,22 @@ export type ModalT = {
   isOpen: boolean
 }
 interface ModalsContextI {
-  menuModal: {
-    isOpen: boolean
-  }
+  menuModal: ModalT
+  addLocationModal: ModalT
   dispatch?: any
 }
-type ModalType = "menuModal" | "otherModal"
+type ModalType = "menuModal" | "addLocationModal"
 interface State {
   menuModal: ModalT
+  addLocationModal: ModalT
 }
 type Action = {
   type: "OPEN" | "CLOSE"
   payload: ModalType
 }
 const initialContext = {
-  menuModal: { isOpen: false }
+  menuModal: { isOpen: false },
+  addLocationModal: { isOpen: false }
 }
 
 export const ModalsContext = createContext<ModalsContextI>(initialContext)

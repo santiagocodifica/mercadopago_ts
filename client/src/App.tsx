@@ -6,6 +6,7 @@ import Cart from "./pages/Cart"
 import Catalog from "./pages/Catalog"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
+import PrepareCheckout from "./pages/PrepareCheckout"
 import Product from "./pages/Product"
 import Signup from "./pages/Signup"
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="catalog" element={ <Catalog /> } />
           <Route path="product/:id" element={ <Product /> } />
           <Route path="cart" element={ <Cart /> } />
+          <Route path="prepareCheckout" element={ <PrepareCheckout /> } />
         </Route>
         <Route path="signup" element={<><Navbar /><Signup /></>} />
         <Route path="login" element={ <><Navbar /><Login /></> } />

@@ -11,7 +11,7 @@ export const locationSchema = new Schema({
   country: { type: String, required: true },
   city: { type: String, required: true },
   address: { type: String, required: true },
-  postalCode: { type: Number, required: true },
+  postalCode: { type: String, required: true },
   comment: { type: String, required: false }
 },{ _id: true })
 

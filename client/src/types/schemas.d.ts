@@ -83,6 +83,6 @@ export interface Location {
   country: "Uruguay"
   city: string
   address: string
-  postalCode: number
+  postalCode: string
   comment?: string
 }

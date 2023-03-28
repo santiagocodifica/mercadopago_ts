@@ -82,6 +82,6 @@ export interface Location extends mongoose.Document {
   country: "Uruguay"
   city: string
   address: string
-  postalCode: number
+  postalCode: string 
   comment?: string
 }
