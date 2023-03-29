@@ -10,6 +10,7 @@ import { validateOrderStock } from "../middleware/order/validateOrderStock"
 const router = express.Router()
 
 router.use(requireAuth)
+
 // POST
 router.post("/", validateOrderInputs, validateOrderStock, createOrder)
 router.post("/mercadopago",validateOrderInputs, validateOrderStock, mercadopagoToken, mercadopagoPayment, createOrder)
