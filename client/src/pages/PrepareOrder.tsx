@@ -1,34 +1,25 @@
 import { useState } from "react"
 import { AiOutlineArrowRight } from "react-icons/ai"
-import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../features/auth"
 import { useCartContext } from "../features/cart"
+import { usePrepareOrder } from "../features/checkout"
 import { useModalsContext } from "../features/modals"
 import { AddLocationModal } from "../features/user"
 import { Location } from "../types/schemas"
 
-const PrepareCheckout = () => {
+const PrepareOrder = () => {
   const { user } = useAuthContext()
   const { cart } = useCartContext()
   const { dispatch } = useModalsContext()
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const navigate = useNavigate()
+  const { prepareOrder, error } = usePrepareOrder()
 
   const handleAddLocation = () => {
     dispatch({ type: "OPEN", payload: "addLocationModal" })
   }
 
   const handleSubmit = () => {
-    if(!selectedLocation){
-      setError("You must select a shipping location")
-      return
-    }
-    if(!cart || cart.length === 0){
-      setError("There are no items selected in the cart")
-      return
-    }
-    navigate("/payment")
+    prepareOrder(selectedLocation, cart)
   }
 
   return(
@@ -71,4 +62,4 @@ const PrepareCheckout = () => {
     </main>
   )
 }
-export default PrepareCheckout
+export default PrepareOrder 

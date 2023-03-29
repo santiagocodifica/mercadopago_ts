@@ -2,7 +2,7 @@ import { Request, Response, RequestHandler } from "express"
 import Order from "../models/orderModel"
 import User from "../models/userModel"
 import Product from "../models/productModel"
-import { OrderI, ProductI, StockItem, SubProductI } from "../types/schemas"
+import { Location, OrderI, ProductI, StockItem, SubProductI } from "../types/schemas"
 
 export const getOrders: RequestHandler = async (_req, res) => {
   try{
@@ -37,7 +37,8 @@ export const getOrdersByStatus: RequestHandler = async (req, res) => {
 }
 
 export const prepareOrder = async (req: Request, res: Response ) => {
-  const { location, products } = req.body
+  const location: Location = req.body.location
+  const products: Array<SubProductI> = req.body.products
   try{
     if(!location || !products){
       throw "Missing fields"
@@ -47,7 +48,7 @@ export const prepareOrder = async (req: Request, res: Response ) => {
     }
     // calculate totalPrice, then push the data.
     let totalPrice: number = 0
-    await Promise.all(products.forEach((product: SubProductI) => {
+    await Promise.all(products.map((product: SubProductI) => {
       const productTotal = product.price * product.amount 
       totalPrice = totalPrice + productTotal
     }))
