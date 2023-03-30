@@ -13,7 +13,7 @@ router.use(requireAuth)
 
 // POST
 router.post("/", validateOrderInputs, validateOrderStock, createOrder)
-router.post("/mercadopago",validateOrderInputs, validateOrderStock, mercadopagoToken, mercadopagoPayment, createOrder)
+router.post("/mercadopago", validateOrderInputs, validateOrderStock, mercadopagoToken, mercadopagoPayment, createOrder)
 router.post("/prepareOrder", prepareOrder) // prepareOrder
 //
 // CMS ROUTES

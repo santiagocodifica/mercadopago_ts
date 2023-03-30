@@ -6,11 +6,13 @@ import Navbar from "./layouts/Navbar"
 import Cart from "./pages/Cart"
 import Catalog from "./pages/Catalog"
 import Checkout from "./pages/Checkout"
+import Error from "./pages/Error"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import PrepareOrder from "./pages/PrepareOrder"
 import Product from "./pages/Product"
 import Signup from "./pages/Signup"
+import Success from "./pages/Success"
 
 function App() {
   const { user } = useAuthContext()
@@ -25,6 +27,8 @@ function App() {
           <Route path="prepareOrder" element={ user ? <PrepareOrder /> : <Login /> } />
         </Route>
         <Route path="checkout" element={user ? <Checkout /> : <Login />} />
+        <Route path="error" element={<Error />} />
+        <Route path="success" element={<Success />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
       </Routes>

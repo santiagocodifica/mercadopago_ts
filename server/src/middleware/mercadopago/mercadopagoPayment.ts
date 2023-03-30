@@ -2,15 +2,15 @@ import { RequestHandler } from "express";
 import mercadopago from "mercadopago";
 
 const mercadopagoPayment: RequestHandler = async (req, res, next) => {
-  const body = req.body
-  const payer = req.body.payer
+  const payer = req.body.mercadopagoData.payer
+  const mercadopagoData = req.body.mercadopagoData
   const paymentData = {
-    transaction_amount: Number(body.transaction_amount),
-    token: body.token,
-    description: body.descriptions,
-    installments: Number(body.installments),
-    payment_method_id: body.payment_method_id,
-    issuer_id: body.issuer_id,
+    transaction_amount: Number(mercadopagoData.transaction_amount),
+    token: mercadopagoData.token,
+    description: mercadopagoData.description,
+    installments: Number(mercadopagoData.installments),
+    payment_method_id: mercadopagoData.payment_method_id,
+    issuer_id: mercadopagoData.issuer_id,
     payer: {
       email: payer.email,
       identification: {
