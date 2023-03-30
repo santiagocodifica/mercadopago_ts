@@ -1,9 +1,11 @@
 import { Link, useLocation, useSearchParams } from "react-router-dom"
 import MenuButton from "../components/MenuButton"
 import { LogoutButton, useAuthContext } from "../features/auth"
+import { useCartContext } from "../features/cart"
 
 const Navbar = () => {
   const { user } = useAuthContext()
+  const { cart } = useCartContext()
   const [searchParams] = useSearchParams()
   const location = useLocation()
 
@@ -27,7 +29,7 @@ const Navbar = () => {
       { user
         ? 
         <ul className="hidden md:flex gap-2 text-primary2">
-          <li className="hover:text-primary1 transition-all"><Link to="/cart">Cart</Link></li>
+          <li className="hover:text-primary1 transition-all"><Link to="/cart">Cart {cart && cart.length !== 0 && `(${cart.length})`}</Link></li>
           <li className="hover:text-primary1 transition-all"><Link to="/account">Account</Link></li>
           <li className="hover:text-secondary1 transition-all"><LogoutButton /></li>
         </ul>

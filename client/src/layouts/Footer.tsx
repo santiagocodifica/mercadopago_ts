@@ -1,6 +1,6 @@
 const Footer = () => {
   return(
-    <footer className="p-4 md:p-8 h-screen flex place-items-end text-2xl md:text-3xl font-serif w-100">
+    <footer className="p-4 md:p-8 mt-60 flex place-items-end text-2xl md:text-3xl font-serif w-100">
       <p className="w-100 md:w-1/2">
         New Arrival is a learning project designed and developed by Santiago Perdomo, aiming to explore into the design and web development of e-commerce websites. 
         <br /><br />

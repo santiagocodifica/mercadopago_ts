@@ -50,7 +50,7 @@ const PrepareOrder = () => {
           }
         </section>
         <div className="fixed flex flex-col md:relative top-24 md:top-0 left-0 md:left-auto w-full p-4 md:p-0 text-right">
-          <button onClick={handleSubmit} className="flex w-full md:w-fit gap-10 place-items-center place-self-end bg-secondary2 p-2 rounded text-lg">
+          <button onClick={handleSubmit} className="flex w-full md:w-fit gap-10 place-items-center place-self-end bg-secondary2 p-2 rounded text-lg hover:text-white hover:bg-primary1 transition-all">
             <span className="flex-grow text-left">Proceed to Payment</span>
             <AiOutlineArrowRight />
           </button>

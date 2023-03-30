@@ -7,7 +7,7 @@ interface ProductsListI {
 
 const ProductsList = ({ products }: ProductsListI) => {
   return( products &&
-    <ul className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+    <ul className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8">
       { products.map(product => { return(
         <li key={product._id}>
           <ProductCard

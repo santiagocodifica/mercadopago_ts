@@ -22,7 +22,7 @@ const HomeProduct = () => {
             <h5 className="uppercase text-primary2 text-sm">{ product.gender }</h5>
             <h2 className="font-serif font-normal text-4xl md:text-5xl">{ product.name }</h2>
             <p className="text-primary2">{ product.description }</p>
-            <Link to={`product/${product._id}`} className="font-medium border-b border-primary1 place-self-start">DISCOVER PRODUCT</Link>
+            <Link to={`product/${product._id}`} className="font-medium border-b border-primary1 place-self-start hover:text-primary3 hover:border-primary3 transition-all">DISCOVER PRODUCT</Link>
           </div>
         </div>
       )})}

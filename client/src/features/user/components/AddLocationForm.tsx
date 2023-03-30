@@ -78,8 +78,8 @@ const AddLocationForm = () => {
         />
       </div> 
       <div className="flex gap-2 mt-4">
-        <button type="submit" className="p-2 border border-primary1 text-lg rounded grow">Create location</button>
-        <button type="button" onClick={handleCancel} className="p-2 bg-primary3 text-lg rounded">Cancel</button>
+        <button type="submit" className="p-2 border border-primary1 text-lg rounded grow hover:text-white hover:bg-primary1 transition-all">Create location</button>
+        <button type="button" onClick={handleCancel} className="p-2 bg-primary3 text-lg rounded hover:text-white hover:bg-primary1 transition-all">Cancel</button>
       </div>
     </form>
   )

@@ -27,6 +27,7 @@ const Product = () => {
         </header>
         <h2 className="font-serif text-5xl">{ product.name }</h2>
         <p className="text-primary2 leading-snug">{ product.description }</p>
+        <h3 className="text-xl font-medium">${ product.price }</h3>
         <SizeSelector stock={product.stock} selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
         <AddToCartButton product={product} selectedStockItem={selectedSize} />
       </div>
