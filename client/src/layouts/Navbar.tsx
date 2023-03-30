@@ -28,7 +28,7 @@ const Navbar = () => {
         ? 
         <ul className="hidden md:flex gap-2 text-primary2">
           <li className="hover:text-primary1 transition-all"><Link to="/cart">Cart</Link></li>
-          <li className="hover:text-primary1 transition-all">Account</li>
+          <li className="hover:text-primary1 transition-all"><Link to="/account">Account</Link></li>
           <li className="hover:text-secondary1 transition-all"><LogoutButton /></li>
         </ul>
         :

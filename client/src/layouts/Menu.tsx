@@ -34,7 +34,7 @@ const Menu = () => {
         { user
           ?
           <ul className="text-primary2">
-            <li>Account</li>
+            <li><Link to="/account">Account</Link></li>
             <li><Link to="/cart">Cart</Link></li>
             <li className="text-secondary1"><LogoutButton /></li>
           </ul>

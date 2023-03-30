@@ -66,6 +66,8 @@ export interface SubProductI {
 }
 
 export interface OrderI {
+  _id: string
+  createdAt: string
   customer: {
     name: string
     email: string,
@@ -75,7 +77,7 @@ export interface OrderI {
   products: Array<SubProductI>
   totalPrice: number
   orderStatus: string
-  mercadopagoData?: object 
+  mercadopagoData?: object
 }
 
 export interface Location {

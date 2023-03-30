@@ -3,6 +3,7 @@ import { useAuthContext } from "./features/auth"
 import Footer from "./layouts/Footer"
 import Menu from "./layouts/Menu"
 import Navbar from "./layouts/Navbar"
+import Account from "./pages/Account"
 import Cart from "./pages/Cart"
 import Catalog from "./pages/Catalog"
 import Checkout from "./pages/Checkout"
@@ -25,6 +26,7 @@ function App() {
           <Route path="product/:id" element={ <Product /> } />
           <Route path="cart" element={ user ? <Cart /> : <Login /> } />
           <Route path="prepareOrder" element={ user ? <PrepareOrder /> : <Login /> } />
+          <Route path="account" element={ user ? <Account /> : <Login /> } />
         </Route>
         <Route path="checkout" element={user ? <Checkout /> : <Login />} />
         <Route path="error" element={<Error />} />
